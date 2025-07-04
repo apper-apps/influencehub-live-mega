@@ -112,12 +112,12 @@ const AffiliateCommissions = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-<div>
+        <div>
           <h1 className="text-3xl font-bold text-white font-display">
             Commission Management
           </h1>
           <p className="text-gray-400 mt-1">
-            Track earnings and manage payouts through Yphoeniex Influencer Hub
+            Track earnings and manage payouts
           </p>
         </div>
         <Button

@@ -72,10 +72,10 @@ const Header = ({ onMenuToggle, title = 'Dashboard', userType = 'store', isMobil
             <ApperIcon name="Menu" size={20} className="text-gray-400" />
           </button>
           
-<div>
+          <div>
             <h1 className="text-lg md:text-xl font-bold text-white font-display truncate max-w-40 md:max-w-none">{title}</h1>
             <p className="text-gray-400 text-sm">
-              {userType === 'store' ? 'Yphoeniex Influencer Hub - Store Owner' : 'Yphoeniex Influencer Hub - Influencer'}
+              {userType === 'store' ? 'Store Owner Dashboard' : 'Influencer Dashboard'}
             </p>
           </div>
         </div>

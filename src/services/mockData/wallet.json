@@ -1,10 +1,10 @@
 {
   "wallet": {
-"availableBalance": 189.50,
-    "pendingBalance": 42.00,
-    "totalEarned": 578.75,
-    "totalPaidOut": 347.25,
-    "monthlyEarnings": 89.50,
+    "availableBalance": 1890.50,
+    "pendingBalance": 420.00,
+    "totalEarned": 5780.75,
+    "totalPaidOut": 3470.25,
+    "monthlyEarnings": 890.50,
     "paypalEmail": "yphoeniex.ent@gmail.com",
     "nextPayoutDate": "2024-02-01T00:00:00Z"
   },
@@ -20,8 +20,8 @@
     },
     {
       "Id": 2,
-"amount": 50.00,
-      "description": "PayPal payout",
+      "type": "payout",
+      "amount": 150.00,
       "description": "PayPal payout",
       "campaignName": "System",
       "status": "completed",
@@ -65,8 +65,8 @@
     },
     {
       "Id": 7,
-"amount": 75.00,
-      "description": "PayPal payout",
+      "type": "payout",
+      "amount": 200.00,
       "description": "PayPal payout",
       "campaignName": "System",
       "status": "completed",

@@ -126,13 +126,13 @@ const handleDeclineCampaign = useCallback(async (campaignId) => {
         className="flex items-center justify-between"
       >
         <div>
-<h1 className="text-3xl font-bold text-white font-display">
+          <h1 className="text-3xl font-bold text-white font-display">
             {userType === 'store' ? 'Store Dashboard' : 'Influencer Dashboard'}
           </h1>
           <p className="text-gray-400 mt-2">
             {userType === 'store' 
-              ? 'Manage your products and campaigns through Yphoeniex Influencer Hub' 
-              : 'Discover new campaigns and track your performance through Yphoeniex Influencer Hub'
+              ? 'Manage your products and campaigns' 
+              : 'Discover new campaigns and track your earnings'
             }
           </p>
         </div>

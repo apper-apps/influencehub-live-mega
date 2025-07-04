@@ -1,62 +1,62 @@
 {
-"totalRevenue": 2450,
-  "totalEarnings": 890,
+  "totalRevenue": 12450,
+  "totalEarnings": 3890,
   "activeCampaigns": 8,
   "completedCampaigns": 15,
-  "totalViews": 5230,
-  "totalEngagement": 1760,
-  "conversionRate": 5.2,
-  "successRate": 78.5,
+  "totalViews": 45230,
+  "totalEngagement": 8760,
+  "conversionRate": 12.5,
+  "successRate": 94.2,
   "topProducts": [
     {
       "Id": 1,
-"name": "Wireless Bluetooth Headphones",
-      "revenue": 840,
-      "views": 2450,
-      "sales": 14
+      "name": "Wireless Bluetooth Headphones",
+      "revenue": 3400,
+      "views": 12450,
+      "sales": 34
     },
     {
       "Id": 3,
-"name": "Fitness Tracker Pro",
-      "revenue": 980,
-      "views": 1580,
-      "sales": 22
+      "name": "Fitness Tracker Pro",
+      "revenue": 7800,
+      "views": 15800,
+      "sales": 52
     },
     {
       "Id": 5,
-"name": "Gaming Mechanical Keyboard",
-      "revenue": 630,
-      "views": 1200,
-      "sales": 18
+      "name": "Gaming Mechanical Keyboard",
+      "revenue": 7790,
+      "views": 11200,
+      "sales": 41
     }
   ],
   "topInfluencers": [
     {
       "Id": 1,
       "name": "Sarah Johnson",
-"earnings": 250,
+      "earnings": 1250,
       "campaigns": 5,
-      "successRate": 86
+      "successRate": 96
     },
     {
       "Id": 2,
       "name": "Mike Chen",
-"earnings": 180,
+      "earnings": 980,
       "campaigns": 4,
-      "successRate": 90
+      "successRate": 100
     },
     {
       "Id": 3,
       "name": "Emma Davis",
-"earnings": 150,
+      "earnings": 750,
       "campaigns": 3,
-      "successRate": 82
+      "successRate": 92
     }
   ],
   "monthlyData": [
-{ "month": "Jan", "revenue": 1500, "campaigns": 12, "views": 2800 },
-    { "month": "Feb", "revenue": 1920, "campaigns": 15, "views": 3100 },
-    { "month": "Mar", "revenue": 2180, "campaigns": 18, "views": 3500 },
-    { "month": "Apr", "revenue": 2450, "campaigns": 20, "views": 5230 }
+    { "month": "Jan", "revenue": 8500, "campaigns": 12, "views": 28000 },
+    { "month": "Feb", "revenue": 9200, "campaigns": 15, "views": 31000 },
+    { "month": "Mar", "revenue": 10800, "campaigns": 18, "views": 35000 },
+    { "month": "Apr", "revenue": 12450, "campaigns": 20, "views": 45230 }
   ]
 }

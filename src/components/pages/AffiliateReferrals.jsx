@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { toast } from "react-toastify";
-import ApperIcon from "@/components/ApperIcon";
-import Badge from "@/components/atoms/Badge";
-import Button from "@/components/atoms/Button";
-import Card from "@/components/atoms/Card";
-import Input from "@/components/atoms/Input";
-import Error from "@/components/ui/Error";
-import Loading from "@/components/ui/Loading";
-import { affiliateService } from "@/services/api/affiliateService";
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { toast } from 'react-toastify'
+import ApperIcon from '@/components/ApperIcon'
+import Card from '@/components/atoms/Card'
+import Button from '@/components/atoms/Button'
+import Badge from '@/components/atoms/Badge'
+import Input from '@/components/atoms/Input'
+import Loading from '@/components/ui/Loading'
+import Error from '@/components/ui/Error'
+import { affiliateService } from '@/services/api/affiliateService'
 
 const AffiliateReferrals = () => {
   const [loading, setLoading] = useState(true)
@@ -92,13 +92,13 @@ const AffiliateReferrals = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-<div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white font-display">
             Referral Management
           </h1>
           <p className="text-gray-400 mt-1">
-            Track and manage your referrals through the platform
+            Track and manage your referrals
           </p>
         </div>
         <Button

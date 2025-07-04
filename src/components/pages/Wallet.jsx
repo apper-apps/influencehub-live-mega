@@ -218,12 +218,13 @@ if (loading) return <Loading type="dashboard" />
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
       >
-<div>
+        <div>
           <h1 className="text-3xl font-bold text-white font-display">Wallet</h1>
           <p className="text-gray-400 mt-2">
-            Manage your earnings, deposits, and payout history through Yphoeniex Influencer Hub
+            Manage your earnings, deposits, and payout history
           </p>
         </div>
+        
         <div className="flex items-center gap-3">
           <Button
             variant="secondary"
@@ -298,9 +299,9 @@ if (loading) return <Loading type="dashboard" />
           
           <div className="space-y-4">
             <div className="p-4 bg-gray-800 rounded-lg">
-<p className="text-gray-400 text-sm mb-2">Next Payout Available</p>
+              <p className="text-gray-400 text-sm mb-2">Next Payout Available</p>
               <p className="text-2xl font-bold text-white">
-                ${walletData?.availableBalance >= 50 ? walletData.availableBalance.toFixed(2) : (50 - (walletData?.availableBalance || 0)).toFixed(2)}
+                ${walletData?.availableBalance >= 50 ? walletData.availableBalance : (50 - walletData?.availableBalance || 50)}
               </p>
               <p className="text-sm text-gray-400">
                 {walletData?.availableBalance >= 50 

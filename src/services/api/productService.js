@@ -39,12 +39,12 @@ class ProductService {
     }, 1000)
   }
 
-generateInfluencerPool(size) {
-    const authenticNames = [
-      'Sarah Chen', 'Michael Torres', 'Emma Silva', 'David Park', 'Lisa Rodriguez',
-      'Alex Morgan', 'Maya Singh', 'Ryan Liu', 'Zoe Williams', 'Jake Martinez',
-      'Ava Thompson', 'Ethan Kumar', 'Sophia Davis', 'Noah Anderson', 'Olivia Lee',
-      'Lucas Garcia', 'Mia Johnson', 'Liam Wilson', 'Isabella Brown', 'Mason Smith'
+  generateInfluencerPool(size) {
+    const names = [
+      'Sarah Johnson', 'Mike Chen', 'Emma Rodriguez', 'David Kim', 'Lisa Zhang',
+      'Alex Thompson', 'Maya Patel', 'Ryan Williams', 'Zoe Martinez', 'Jake Brown',
+      'Ava Davis', 'Ethan Wilson', 'Sophia Lee', 'Noah Garcia', 'Olivia Moore',
+      'Lucas Anderson', 'Mia Taylor', 'Liam Jackson', 'Isabella White', 'Mason Harris'
     ]
     
     const niches = ['Fashion', 'Beauty', 'Tech', 'Food', 'Lifestyle', 'Sports', 'Gaming']
@@ -53,23 +53,23 @@ generateInfluencerPool(size) {
     
     const pool = []
     for (let i = 0; i < size; i++) {
-      const name = authenticNames[i % authenticNames.length] + (i >= authenticNames.length ? ` ${Math.floor(i / authenticNames.length) + 1}` : '')
-      const baseFollowers = Math.floor(Math.random() * 500000) + 50000 // More realistic range: 50K-550K
-      const engagement = Math.random() * 4 + 2 // Realistic engagement: 2-6%
+      const name = names[i % names.length] + (i > names.length ? ` ${Math.floor(i / names.length)}` : '')
+      const followers = Math.floor(Math.random() * 900000) + 100000
+      const engagement = Math.random() * 8 + 1
       
       pool.push({
         id: i + 1,
         name,
-        username: name.toLowerCase().replace(' ', '') + (1000 + i),
+        username: name.toLowerCase().replace(' ', '') + Math.floor(Math.random() * 999),
         niche: niches[Math.floor(Math.random() * niches.length)],
         secondaryNiches: [niches[Math.floor(Math.random() * niches.length)]],
-        followers: baseFollowers > 100000 ? `${Math.floor(baseFollowers/1000)}K` : `${Math.floor(baseFollowers/1000)}K`,
+        followers: followers > 1000000 ? '1M+' : followers > 100000 ? `${Math.floor(followers/1000)}K` : `${Math.floor(followers/1000)}K`,
         engagement: `${engagement.toFixed(1)}%`,
-        qualityScore: Math.floor(Math.random() * 2) + 3, // More conservative 3-4 range
+        qualityScore: Math.floor(Math.random() * 3) + 3,
         contentStyle: contentStyles[Math.floor(Math.random() * contentStyles.length)],
         engagementTier: engagementTiers[Math.floor(Math.random() * engagementTiers.length)],
-        averageViews: Math.floor(baseFollowers * (engagement / 100) * 20), // Realistic view calculation
-        responseRate: Math.floor(Math.random() * 20) + 75 // 75-95% response rate
+        averageViews: Math.floor(Math.random() * 500000) + 50000,
+        responseRate: Math.floor(Math.random() * 30) + 70
       })
     }
     
@@ -331,36 +331,36 @@ generateInfluencerPool(size) {
     }
   }
 
-generateInfluencers(criteria) {
-    const authenticNames = [
-      'Sarah Chen', 'Michael Torres', 'Emma Silva', 'David Park', 'Lisa Rodriguez',
-      'Alex Morgan', 'Maya Singh', 'Ryan Liu', 'Zoe Williams', 'Jake Martinez',
-      'Ava Thompson', 'Ethan Kumar', 'Sophia Davis', 'Noah Anderson', 'Olivia Lee',
-      'Lucas Garcia', 'Mia Johnson', 'Liam Wilson', 'Isabella Brown', 'Mason Smith'
+  generateInfluencers(criteria) {
+    const names = [
+      'Sarah Johnson', 'Mike Chen', 'Emma Rodriguez', 'David Kim', 'Lisa Zhang',
+      'Alex Thompson', 'Maya Patel', 'Ryan Williams', 'Zoe Martinez', 'Jake Brown',
+      'Ava Davis', 'Ethan Wilson', 'Sophia Lee', 'Noah Garcia', 'Olivia Moore',
+      'Lucas Anderson', 'Mia Taylor', 'Liam Jackson', 'Isabella White', 'Mason Harris'
     ]
     
     const niches = ['Fashion', 'Beauty', 'Tech', 'Food', 'Lifestyle', 'Sports', 'Gaming']
     const contentStyles = ['authentic', 'professional', 'creative', 'educational', 'entertaining']
     const engagementTiers = ['low', 'medium', 'high', 'premium']
     
-    return authenticNames.map((name, index) => {
-      const baseFollowers = Math.floor(Math.random() * 400000) + 80000 // Realistic 80K-480K range
-      const engagement = Math.random() * 3.5 + 2.5 // Industry standard 2.5-6% engagement
-      const qualityScore = Math.floor(Math.random() * 2) + 3 // Conservative 3-4 quality range
+    return names.map((name, index) => {
+      const followers = Math.floor(Math.random() * 900000) + 100000 // 100K-1M followers
+      const engagement = Math.random() * 8 + 1 // 1-9% engagement
+      const qualityScore = Math.floor(Math.random() * 3) + 3 // 3-5 stars
       
       return {
         id: index + 1,
         name,
-        username: name.toLowerCase().replace(' ', '') + (2000 + index),
+        username: name.toLowerCase().replace(' ', '') + Math.floor(Math.random() * 999),
         niche: criteria.niche || niches[Math.floor(Math.random() * niches.length)],
         secondaryNiches: [niches[Math.floor(Math.random() * niches.length)]],
-        followers: `${Math.floor(baseFollowers/1000)}K`,
+        followers: followers > 1000000 ? '1M+' : followers > 100000 ? `${Math.floor(followers/1000)}K` : `${Math.floor(followers/1000)}K`,
         engagement: `${engagement.toFixed(1)}%`,
         qualityScore,
         contentStyle: contentStyles[Math.floor(Math.random() * contentStyles.length)],
         engagementTier: engagementTiers[Math.floor(Math.random() * engagementTiers.length)],
-        averageViews: Math.floor(baseFollowers * (engagement / 100) * 15), // Realistic view calculation
-        responseRate: Math.floor(Math.random() * 15) + 80 // Professional 80-95% response rate
+        averageViews: Math.floor(Math.random() * 500000) + 50000,
+        responseRate: Math.floor(Math.random() * 30) + 70 // 70-100% response rate
       }
     })
   }
