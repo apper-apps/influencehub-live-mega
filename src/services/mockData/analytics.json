@@ -1,0 +1,62 @@
+{
+  "totalRevenue": 12450,
+  "totalEarnings": 3890,
+  "activeCampaigns": 8,
+  "completedCampaigns": 15,
+  "totalViews": 45230,
+  "totalEngagement": 8760,
+  "conversionRate": 12.5,
+  "successRate": 94.2,
+  "topProducts": [
+    {
+      "Id": 1,
+      "name": "Wireless Bluetooth Headphones",
+      "revenue": 3400,
+      "views": 12450,
+      "sales": 34
+    },
+    {
+      "Id": 3,
+      "name": "Fitness Tracker Pro",
+      "revenue": 7800,
+      "views": 15800,
+      "sales": 52
+    },
+    {
+      "Id": 5,
+      "name": "Gaming Mechanical Keyboard",
+      "revenue": 7790,
+      "views": 11200,
+      "sales": 41
+    }
+  ],
+  "topInfluencers": [
+    {
+      "Id": 1,
+      "name": "Sarah Johnson",
+      "earnings": 1250,
+      "campaigns": 5,
+      "successRate": 96
+    },
+    {
+      "Id": 2,
+      "name": "Mike Chen",
+      "earnings": 980,
+      "campaigns": 4,
+      "successRate": 100
+    },
+    {
+      "Id": 3,
+      "name": "Emma Davis",
+      "earnings": 750,
+      "campaigns": 3,
+      "successRate": 92
+    }
+  ],
+  "monthlyData": [
+    { "month": "Jan", "revenue": 8500, "campaigns": 12, "views": 28000 },
+    { "month": "Feb", "revenue": 9200, "campaigns": 15, "views": 31000 },
+    { "month": "Mar", "revenue": 10800, "campaigns": 18, "views": 35000 },
+    { "month": "Apr", "revenue": 12450, "campaigns": 20, "views": 45230 }
+  ]
+}
