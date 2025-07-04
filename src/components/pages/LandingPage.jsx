@@ -349,6 +349,7 @@ Continue as {selectedRole === 'store' ? 'Store Owner' : selectedRole === 'influe
 
       {/* Pricing Section */}
       <section className="py-20">
+        <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-white font-display mb-6">
               Choose Your Plan
@@ -357,7 +358,8 @@ Continue as {selectedRole === 'store' ? 'Store Owner' : selectedRole === 'influe
               Flexible pricing for every business size and influencer level
             </p>
           </div>
-<div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Store Owner Plans */}
             <div>
               <h3 className="text-2xl font-bold text-white mb-8 text-center">Store Owner Plans</h3>
@@ -471,7 +473,7 @@ Continue as {selectedRole === 'store' ? 'Store Owner' : selectedRole === 'influe
                 ))}
               </div>
             </div>
-</div>
+          </div>
         </div>
       </section>
 
