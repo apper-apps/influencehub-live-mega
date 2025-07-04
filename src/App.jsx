@@ -9,6 +9,9 @@ import MessagingCenter from '@/components/pages/MessagingCenter'
 import Analytics from '@/components/pages/Analytics'
 import Wallet from '@/components/pages/Wallet'
 import Settings from '@/components/pages/Settings'
+import AffiliateDashboard from '@/components/pages/AffiliateDashboard'
+import AffiliateReferrals from '@/components/pages/AffiliateReferrals'
+import AffiliateCommissions from '@/components/pages/AffiliateCommissions'
 
 function App() {
   return (
@@ -16,7 +19,7 @@ function App() {
       <div className="min-h-screen bg-background text-white">
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/app" element={<Layout />}>
+<Route path="/app" element={<Layout />}>
             <Route index element={<Dashboard />} />
             <Route path="campaigns" element={<CampaignBrowser />} />
             <Route path="products" element={<ProductManagement />} />
@@ -24,6 +27,9 @@ function App() {
             <Route path="analytics" element={<Analytics />} />
             <Route path="wallet" element={<Wallet />} />
             <Route path="settings" element={<Settings />} />
+            <Route path="affiliate" element={<AffiliateDashboard />} />
+            <Route path="affiliate/referrals" element={<AffiliateReferrals />} />
+            <Route path="affiliate/commissions" element={<AffiliateCommissions />} />
           </Route>
         </Routes>
         <ToastContainer

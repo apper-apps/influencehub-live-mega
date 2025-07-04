@@ -1,0 +1,128 @@
+{
+  "affiliates": [
+    {
+      "Id": 1,
+      "userId": "affiliate_001",
+      "name": "Sarah Johnson",
+      "email": "sarah.johnson@example.com",
+      "referralCode": "SAR2024",
+      "joinDate": "2024-01-15T10:00:00Z",
+      "status": "active",
+      "tier": "elite",
+      "commissionRate": 0.5,
+      "totalReferrals": 45,
+      "successfulReferrals": 23,
+      "totalEarnings": 2875.50,
+      "pendingCommissions": 425.75,
+      "lastPayoutDate": "2024-02-01T00:00:00Z",
+      "nextPayoutDate": "2024-03-01T00:00:00Z"
+    },
+    {
+      "Id": 2,
+      "userId": "affiliate_002",
+      "name": "Michael Chen",
+      "email": "michael.chen@example.com",
+      "referralCode": "MIC2024",
+      "joinDate": "2024-01-20T14:30:00Z",
+      "status": "active",
+      "tier": "pro",
+      "commissionRate": 0.5,
+      "totalReferrals": 32,
+      "successfulReferrals": 18,
+      "totalEarnings": 1950.25,
+      "pendingCommissions": 275.50,
+      "lastPayoutDate": "2024-02-01T00:00:00Z",
+      "nextPayoutDate": "2024-03-01T00:00:00Z"
+    }
+  ],
+  "referrals": [
+    {
+      "Id": 1,
+      "affiliateId": 1,
+      "referralCode": "SAR2024",
+      "email": "customer1@example.com",
+      "name": "John Smith",
+      "signupDate": "2024-02-15T09:15:00Z",
+      "status": "converted",
+      "subscriptionPlan": "pro",
+      "subscriptionValue": 99.00,
+      "commissionEarned": 49.50,
+      "conversionDate": "2024-02-15T11:30:00Z",
+      "userType": "store"
+    },
+    {
+      "Id": 2,
+      "affiliateId": 1,
+      "referralCode": "SAR2024",
+      "email": "customer2@example.com",
+      "name": "Emma Wilson",
+      "signupDate": "2024-02-18T16:45:00Z",
+      "status": "pending",
+      "subscriptionPlan": null,
+      "subscriptionValue": 0,
+      "commissionEarned": 0,
+      "conversionDate": null,
+      "userType": "influencer"
+    },
+    {
+      "Id": 3,
+      "affiliateId": 2,
+      "referralCode": "MIC2024",
+      "email": "customer3@example.com",
+      "name": "David Brown",
+      "signupDate": "2024-02-20T12:00:00Z",
+      "status": "converted",
+      "subscriptionPlan": "growth",
+      "subscriptionValue": 59.99,
+      "commissionEarned": 29.99,
+      "conversionDate": "2024-02-20T14:15:00Z",
+      "userType": "store"
+    }
+  ],
+  "commissions": [
+    {
+      "Id": 1,
+      "affiliateId": 1,
+      "referralId": 1,
+      "amount": 49.50,
+      "date": "2024-02-15T11:30:00Z",
+      "status": "paid",
+      "payoutDate": "2024-03-01T00:00:00Z",
+      "subscriptionPlan": "pro",
+      "customerName": "John Smith"
+    },
+    {
+      "Id": 2,
+      "affiliateId": 2,
+      "referralId": 3,
+      "amount": 29.99,
+      "date": "2024-02-20T14:15:00Z",
+      "status": "pending",
+      "payoutDate": null,
+      "subscriptionPlan": "growth",
+      "customerName": "David Brown"
+    }
+  ],
+  "payouts": [
+    {
+      "Id": 1,
+      "affiliateId": 1,
+      "amount": 850.25,
+      "date": "2024-02-01T00:00:00Z",
+      "status": "completed",
+      "method": "bank_transfer",
+      "transactionId": "TXN_2024_001",
+      "commissionsIncluded": 12
+    },
+    {
+      "Id": 2,
+      "affiliateId": 2,
+      "amount": 625.50,
+      "date": "2024-02-01T00:00:00Z",
+      "status": "completed",
+      "method": "paypal",
+      "transactionId": "TXN_2024_002",
+      "commissionsIncluded": 8
+    }
+  ]
+}

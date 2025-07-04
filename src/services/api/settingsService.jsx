@@ -1,5 +1,3 @@
-import React from "react";
-import Error from "@/components/ui/Error";
 import settingsData from "@/services/mockData/settings.json";
 
 class SettingsService {

@@ -1,9 +1,9 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
-import ApperIcon from '@/components/ApperIcon'
-import Button from '@/components/atoms/Button'
-import Badge from '@/components/atoms/Badge'
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import ApperIcon from "@/components/ApperIcon";
+import Badge from "@/components/atoms/Badge";
+import Button from "@/components/atoms/Button";
 
 const LandingPage = () => {
   const [selectedRole, setSelectedRole] = useState(null)
@@ -33,6 +33,15 @@ const LandingPage = () => {
     { icon: 'Award', title: 'Rewards Program', description: 'Earn monthly prizes and exclusive bonuses' },
     { icon: 'Heart', title: 'Support Program', description: 'Get essentials delivered after 10+ confirmed sales' },
     { icon: 'Wallet', title: 'Instant Payouts', description: 'Receive payments instantly when you hit $50 balance' }
+]
+
+  const affiliateFeatures = [
+    { icon: 'Users', title: 'Referral System', description: 'Generate unique referral codes and track signups' },
+    { icon: 'DollarSign', title: '50% Commission', description: 'Earn 50% of subscription fees from successful referrals' },
+    { icon: 'TrendingUp', title: 'Performance Tracking', description: 'Monitor referral performance and conversion rates' },
+    { icon: 'CreditCard', title: 'Instant Payouts', description: 'Receive commission payments automatically' },
+    { icon: 'Award', title: 'Bonus Rewards', description: 'Earn additional bonuses for high-performing referrals' },
+    { icon: 'BarChart3', title: 'Analytics Dashboard', description: 'Detailed insights on referral performance and earnings' }
   ]
 
   const plans = {
@@ -47,6 +56,12 @@ const LandingPage = () => {
       { name: 'Bronze', price: 4.99, features: ['15% more visibility', 'Bronze badge', 'Priority support'] },
       { name: 'Silver', price: 15.99, features: ['30% visibility boost', 'Silver badge', 'Featured listing'] },
       { name: 'Gold', price: 29.99, features: ['50% visibility boost', 'Gold badge', 'Top-tier exposure'] }
+    ],
+    affiliate: [
+      { name: 'Free', price: 0, features: ['Basic referral tracking', 'Standard commission rate', 'Email support'] },
+      { name: 'Partner', price: 19.99, features: ['Enhanced tracking', 'Priority referral processing', 'Dedicated support'] },
+      { name: 'Pro', price: 49.99, features: ['Advanced analytics', 'Bonus commission tiers', 'Marketing materials'] },
+      { name: 'Elite', price: 99.99, features: ['Custom referral programs', 'Personal account manager', 'Exclusive partnerships'] }
     ]
   }
 
@@ -101,7 +116,7 @@ const LandingPage = () => {
             >
               <p className="text-lg text-gray-300 mb-8">Choose your role to get started:</p>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
                 {/* Store Owner Card */}
                 <motion.div
                   whileHover={{ scale: 1.02 }}
@@ -175,6 +190,43 @@ const LandingPage = () => {
                     </motion.div>
                   )}
                 </motion.div>
+
+                {/* Affiliate Marketer Card */}
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => handleRoleSelect('affiliate')}
+                  className={`
+                    relative p-8 rounded-xl border-2 cursor-pointer transition-all duration-300
+                    ${selectedRole === 'affiliate' 
+                      ? 'border-primary bg-primary/10' 
+                      : 'border-gray-600 hover:border-primary/50 bg-surface'
+                    }
+                  `}
+                >
+                  <div className="text-center space-y-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-accent to-warning rounded-lg flex items-center justify-center mx-auto">
+                      <ApperIcon name="Share2" size={32} className="text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-white font-display">Affiliate Marketer</h3>
+                    <p className="text-gray-300">
+                      Promote InfluenceHub and earn 50% commission on successful referrals
+                    </p>
+                    <div className="flex justify-center gap-2">
+                      <Badge variant="warning" size="small">50% Commission</Badge>
+                      <Badge variant="success" size="small">Instant Payouts</Badge>
+                    </div>
+                  </div>
+                  {selectedRole === 'affiliate' && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute top-4 right-4 w-6 h-6 bg-success rounded-full flex items-center justify-center"
+                    >
+                      <ApperIcon name="Check" size={14} className="text-white" />
+                    </motion.div>
+                  )}
+                </motion.div>
               </div>
 
               {selectedRole && (
@@ -189,7 +241,7 @@ const LandingPage = () => {
                     onClick={() => handleRoleSelect(selectedRole)}
                     className="px-12 py-4 text-lg"
                   >
-                    Continue as {selectedRole === 'store' ? 'Store Owner' : 'Influencer'}
+Continue as {selectedRole === 'store' ? 'Store Owner' : selectedRole === 'influencer' ? 'Influencer' : 'Affiliate Marketer'}
                   </Button>
                 </motion.div>
               )}
@@ -209,8 +261,7 @@ const LandingPage = () => {
               Everything you need to succeed in influencer marketing
             </p>
           </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+<div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Store Owner Features */}
             <div>
               <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-2">
@@ -264,13 +315,40 @@ const LandingPage = () => {
                 ))}
               </div>
             </div>
+
+            {/* Affiliate Marketer Features */}
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-2">
+                <ApperIcon name="Share2" size={24} className="text-accent" />
+                For Affiliate Marketers
+              </h3>
+              <div className="space-y-6">
+                {affiliateFeatures.map((feature, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex items-start gap-4"
+                  >
+                    <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <ApperIcon name={feature.icon} size={20} className="text-accent" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-white mb-2">{feature.title}</h4>
+                      <p className="text-gray-300">{feature.description}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+</div>
           </div>
         </div>
       </section>
 
       {/* Pricing Section */}
       <section className="py-20">
-        <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-white font-display mb-6">
               Choose Your Plan
@@ -279,12 +357,11 @@ const LandingPage = () => {
               Flexible pricing for every business size and influencer level
             </p>
           </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+<div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Store Owner Plans */}
             <div>
               <h3 className="text-2xl font-bold text-white mb-8 text-center">Store Owner Plans</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6">
                 {plans.store.map((plan, index) => (
                   <motion.div
                     key={index}
@@ -322,7 +399,7 @@ const LandingPage = () => {
             {/* Influencer Plans */}
             <div>
               <h3 className="text-2xl font-bold text-white mb-8 text-center">Influencer Plans</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6">
                 {plans.influencer.map((plan, index) => (
                   <motion.div
                     key={index}
@@ -356,7 +433,45 @@ const LandingPage = () => {
                 ))}
               </div>
             </div>
-          </div>
+
+            {/* Affiliate Plans */}
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-8 text-center">Affiliate Plans</h3>
+              <div className="grid grid-cols-1 gap-6">
+                {plans.affiliate.map((plan, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-surface border border-gray-600 rounded-lg p-6 hover:border-primary/50 transition-colors"
+                  >
+                    <div className="text-center mb-6">
+                      <h4 className="text-xl font-bold text-white mb-2">{plan.name}</h4>
+                      <div className="text-3xl font-bold text-white">
+                        ${plan.price}
+                        <span className="text-sm text-gray-400 font-normal">/month</span>
+                      </div>
+                    </div>
+                    <ul className="space-y-3 mb-6">
+                      {plan.features.map((feature, i) => (
+                        <li key={i} className="flex items-center gap-2 text-gray-300">
+                          <ApperIcon name="Check" size={16} className="text-success" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                    <Button 
+                      variant={plan.name === 'Elite' ? 'primary' : 'secondary'} 
+                      className="w-full"
+                    >
+                      Choose Plan
+                    </Button>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+</div>
         </div>
       </section>
 

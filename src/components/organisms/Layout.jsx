@@ -5,7 +5,7 @@ import Sidebar from '@/components/organisms/Sidebar'
 
 const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [userType, setUserType] = useState('store') // This would come from auth context
+  const [userType, setUserType] = useState('store') // This would come from auth context - 'store', 'influencer', or 'affiliate'
 
   return (
     <div className="flex h-screen bg-background">

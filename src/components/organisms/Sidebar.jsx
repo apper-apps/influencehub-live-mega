@@ -27,7 +27,16 @@ const Sidebar = ({ isOpen, onClose, userType = 'store' }) => {
     { path: '/app/settings', label: 'Settings', icon: 'Settings' }
   ]
 
-  const navItems = userType === 'store' ? storeNavItems : influencerNavItems
+  const affiliateNavItems = [
+    { path: '/app/affiliate', label: 'Dashboard', icon: 'LayoutDashboard' },
+    { path: '/app/affiliate/referrals', label: 'Referrals', icon: 'Share2' },
+    { path: '/app/affiliate/commissions', label: 'Commissions', icon: 'DollarSign' },
+    { path: '/app/analytics', label: 'Analytics', icon: 'BarChart3' },
+    { path: '/app/wallet', label: 'Wallet', icon: 'Wallet' },
+    { path: '/app/settings', label: 'Settings', icon: 'Settings' }
+  ]
+
+  const navItems = userType === 'store' ? storeNavItems : userType === 'influencer' ? influencerNavItems : affiliateNavItems
 
   const sidebarVariants = {
     open: {
@@ -117,14 +126,14 @@ const Sidebar = ({ isOpen, onClose, userType = 'store' }) => {
         {!collapsed && (
           <div className="p-4 border-t border-gray-700">
             <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-3">
-              <div className="flex items-center gap-2 mb-2">
+<div className="flex items-center gap-2 mb-2">
                 <ApperIcon name="Crown" size={16} className="text-warning" />
                 <span className="text-sm font-medium text-white">
-                  {userType === 'store' ? 'Pro Plan' : 'Gold Member'}
+                  {userType === 'store' ? 'Pro Plan' : userType === 'influencer' ? 'Gold Member' : 'Elite Partner'}
                 </span>
               </div>
               <p className="text-xs text-gray-400">
-                {userType === 'store' ? '12 influencer slots' : '50% visibility boost'}
+                {userType === 'store' ? '12 influencer slots' : userType === 'influencer' ? '50% visibility boost' : '50% commission rate'}
               </p>
             </div>
           </div>
@@ -186,14 +195,14 @@ const Sidebar = ({ isOpen, onClose, userType = 'store' }) => {
         {/* User Plan Info */}
         <div className="p-4 border-t border-gray-700">
           <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-3">
-            <div className="flex items-center gap-2 mb-2">
+<div className="flex items-center gap-2 mb-2">
               <ApperIcon name="Crown" size={16} className="text-warning" />
               <span className="text-sm font-medium text-white">
-                {userType === 'store' ? 'Pro Plan' : 'Gold Member'}
+                {userType === 'store' ? 'Pro Plan' : userType === 'influencer' ? 'Gold Member' : 'Elite Partner'}
               </span>
             </div>
             <p className="text-xs text-gray-400">
-              {userType === 'store' ? '12 influencer slots' : '50% visibility boost'}
+              {userType === 'store' ? '12 influencer slots' : userType === 'influencer' ? '50% visibility boost' : '50% commission rate'}
             </p>
           </div>
         </div>
