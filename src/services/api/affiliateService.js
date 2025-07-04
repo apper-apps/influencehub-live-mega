@@ -10,22 +10,155 @@ class AffiliateService {
     this.lastReferralId = Math.max(...this.referrals.map(r => r.Id), 0)
     this.lastCommissionId = Math.max(...this.commissions.map(c => c.Id), 0)
     this.lastPayoutId = Math.max(...this.payouts.map(p => p.Id), 0)
+    
+    // Multi-tier caching system for scale
+    this.cache = new Map()
+    this.sessionCache = new Map()
+    this.cacheTimestamps = new Map()
+    this.backgroundTasks = new Set()
+    this.cacheTTL = 5 * 60 * 1000 // 5 minutes
+    this.maxCacheSize = 1000
+    
+    // Performance monitoring
+    this.requestCount = 0
+    this.avgResponseTime = 0
+    
+    // Initialize background cleanup
+    this.initializeCacheCleanup()
+  }
+
+  initializeCacheCleanup() {
+    // Clean up expired cache entries every 5 minutes
+    setInterval(() => {
+      this.cleanExpiredCache()
+    }, 5 * 60 * 1000)
+  }
+
+  cleanExpiredCache() {
+    const now = Date.now()
+    for (const [key, timestamp] of this.cacheTimestamps.entries()) {
+      if (now - timestamp > this.cacheTTL) {
+        this.cache.delete(key)
+        this.sessionCache.delete(key)
+        this.cacheTimestamps.delete(key)
+      }
+    }
+    
+    // Limit cache size to prevent memory issues
+    if (this.cache.size > this.maxCacheSize) {
+      const entries = Array.from(this.cache.entries())
+      entries.slice(0, Math.floor(this.maxCacheSize * 0.2)).forEach(([key]) => {
+        this.cache.delete(key)
+        this.sessionCache.delete(key)
+        this.cacheTimestamps.delete(key)
+      })
+    }
+  }
+
+  getCacheKey(method, params = {}) {
+    return `${method}_${JSON.stringify(params)}`
+  }
+
+  getCachedData(key) {
+    const timestamp = this.cacheTimestamps.get(key)
+    if (timestamp && Date.now() - timestamp < this.cacheTTL) {
+      return this.cache.get(key)
+    }
+    return null
+  }
+
+  setCachedData(key, data) {
+    this.cache.set(key, data)
+    this.cacheTimestamps.set(key, Date.now())
+  }
+
+  trackPerformance(startTime) {
+    const duration = Date.now() - startTime
+    this.requestCount++
+    this.avgResponseTime = ((this.avgResponseTime * (this.requestCount - 1)) + duration) / this.requestCount
   }
 
   // Affiliate Management
-  async getAll() {
-    await this.delay(300)
-    return [...this.affiliates]
+async getAll(options = {}) {
+    const startTime = Date.now()
+    const { page = 1, limit = 50, useCache = true } = options
+    const cacheKey = this.getCacheKey('getAll', { page, limit })
+    
+    if (useCache) {
+      const cached = this.getCachedData(cacheKey)
+      if (cached) {
+        this.trackPerformance(startTime)
+        return cached
+      }
+    }
+
+    await this.delay(150) // Reduced delay for better performance
+    
+    // Implement pagination for better memory management
+    const startIndex = (page - 1) * limit
+    const endIndex = startIndex + limit
+    const items = this.affiliates.slice(startIndex, endIndex).map(a => ({ ...a }))
+    const hasMore = endIndex < this.affiliates.length
+    
+    const result = {
+      items,
+      hasMore,
+      total: this.affiliates.length,
+      page,
+      limit
+    }
+    
+    this.setCachedData(cacheKey, result)
+    this.trackPerformance(startTime)
+    
+    // Background prefetch next page
+    if (hasMore && !this.backgroundTasks.has(`prefetch_${page + 1}`)) {
+      this.prefetchNextPage(page + 1, limit)
+    }
+    
+    return result
   }
 
   async getById(id) {
-    await this.delay(200)
+    const startTime = Date.now()
+    const cacheKey = this.getCacheKey('getById', { id })
+    
+    const cached = this.getCachedData(cacheKey)
+    if (cached) {
+      this.trackPerformance(startTime)
+      return cached
+    }
+
+    await this.delay(100)
     const affiliate = this.affiliates.find(a => a.Id === id)
-    return affiliate ? { ...affiliate } : null
+    const result = affiliate ? { ...affiliate } : null
+    
+    if (result) {
+      this.setCachedData(cacheKey, result)
+    }
+    
+    this.trackPerformance(startTime)
+    return result
   }
 
-  async create(affiliateData) {
-    await this.delay(400)
+  async prefetchNextPage(page, limit) {
+    const taskKey = `prefetch_${page}`
+    this.backgroundTasks.add(taskKey)
+    
+    try {
+      // Small delay to not interfere with main requests
+      await this.delay(500)
+      await this.getAll({ page, limit, useCache: false })
+    } catch (error) {
+      console.warn('Background prefetch failed:', error)
+    } finally {
+      this.backgroundTasks.delete(taskKey)
+    }
+  }
+async create(affiliateData) {
+    const startTime = Date.now()
+    await this.delay(200) // Reduced delay
+    
     const newAffiliate = {
       ...affiliateData,
       Id: ++this.lastId,
@@ -38,8 +171,26 @@ class AffiliateService {
       referralCode: this.generateReferralCode(affiliateData.name),
       commissionRate: 0.5
     }
+    
     this.affiliates.push(newAffiliate)
+    
+    // Invalidate relevant caches
+    this.invalidateCache(['getAll'])
+    
+    this.trackPerformance(startTime)
     return { ...newAffiliate }
+  }
+
+  invalidateCache(patterns = []) {
+    for (const [key] of this.cache.entries()) {
+      for (const pattern of patterns) {
+        if (key.includes(pattern)) {
+          this.cache.delete(key)
+          this.sessionCache.delete(key)
+          this.cacheTimestamps.delete(key)
+        }
+      }
+    }
   }
 
   async update(id, updates) {

@@ -1,16 +1,23 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import SearchBar from '@/components/molecules/SearchBar'
-import CampaignCard from '@/components/molecules/CampaignCard'
-import Loading from '@/components/ui/Loading'
-import Error from '@/components/ui/Error'
-import Empty from '@/components/ui/Empty'
-import ApperIcon from '@/components/ApperIcon'
-import Button from '@/components/atoms/Button'
-import Badge from '@/components/atoms/Badge'
-import { campaignService } from '@/services/api/campaignService'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import ApperIcon from "@/components/ApperIcon";
+import Badge from "@/components/atoms/Badge";
+import Button from "@/components/atoms/Button";
+import Empty from "@/components/ui/Empty";
+import Error from "@/components/ui/Error";
+import Loading from "@/components/ui/Loading";
+import SearchBar from "@/components/molecules/SearchBar";
+import CampaignCard from "@/components/molecules/CampaignCard";
+import affiliatesData from "@/services/mockData/affiliates.json";
+import messagesData from "@/services/mockData/messages.json";
+import analyticsData from "@/services/mockData/analytics.json";
+import walletData from "@/services/mockData/wallet.json";
+import productsData from "@/services/mockData/products.json";
+import settingsData from "@/services/mockData/settings.json";
+import campaignsData from "@/services/mockData/campaigns.json";
+import { campaignService } from "@/services/api/campaignService";
 
-const CampaignBrowser = () => {
+const CampaignBrowser = React.memo(() => {
   const [campaigns, setCampaigns] = useState([])
   const [filteredCampaigns, setFilteredCampaigns] = useState([])
   const [loading, setLoading] = useState(true)
@@ -18,59 +25,92 @@ const CampaignBrowser = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedFilters, setSelectedFilters] = useState([])
   const [sortBy, setSortBy] = useState('newest')
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const searchTimeoutRef = useRef(null)
 
-  const filters = ['Fashion', 'Beauty', 'Tech', 'Food', 'Lifestyle', 'Sports', 'Gaming']
-  const sortOptions = [
+  const filters = useMemo(() => 
+    ['Fashion', 'Beauty', 'Tech', 'Food', 'Lifestyle', 'Sports', 'Gaming'], []
+  )
+  
+  const sortOptions = useMemo(() => [
     { value: 'newest', label: 'Newest First' },
     { value: 'highest_commission', label: 'Highest Commission' },
     { value: 'deadline', label: 'Deadline Soon' },
     { value: 'most_popular', label: 'Most Popular' }
-  ]
-
-  useEffect(() => {
+  ], [])
+useEffect(() => {
     loadCampaigns()
   }, [])
 
+  // Debounced filtering for better performance
   useEffect(() => {
-    filterAndSortCampaigns()
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current)
+    }
+    
+    searchTimeoutRef.current = setTimeout(() => {
+      filterAndSortCampaigns()
+    }, 300)
+
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current)
+      }
+    }
   }, [campaigns, searchQuery, selectedFilters, sortBy])
 
-  const loadCampaigns = async () => {
+  const loadCampaigns = useCallback(async (pageNum = 1, append = false) => {
     try {
-      setLoading(true)
+      if (pageNum === 1) setLoading(true)
+      else setLoadingMore(true)
+      
       setError('')
-      const data = await campaignService.getAll()
-      setCampaigns(data)
+      const data = await campaignService.getAll({ 
+        page: pageNum, 
+        limit: 20,
+        useCache: pageNum === 1 
+      })
+      
+      if (append) {
+        setCampaigns(prev => [...prev, ...(data.items || data)])
+      } else {
+        setCampaigns(data.items || data)
+      }
+      
+      setHasMore(data.hasMore || false)
     } catch (err) {
       setError('Failed to load campaigns')
     } finally {
       setLoading(false)
+      setLoadingMore(false)
     }
-  }
+  }, [])
 
-  const filterAndSortCampaigns = () => {
+// Memoized filtering and sorting for performance
+  const filterAndSortCampaigns = useCallback(() => {
     let filtered = [...campaigns]
 
-    // Apply search filter
+    // Apply search filter with optimized string matching
     if (searchQuery) {
-      filtered = filtered.filter(campaign =>
-        campaign.productName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        campaign.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        campaign.storeName.toLowerCase().includes(searchQuery.toLowerCase())
-      )
+      const queryLower = searchQuery.toLowerCase()
+      filtered = filtered.filter(campaign => {
+        const searchableText = `${campaign.productName} ${campaign.description} ${campaign.storeName}`.toLowerCase()
+        return searchableText.includes(queryLower)
+      })
     }
 
     // Apply category filters
     if (selectedFilters.length > 0) {
-      filtered = filtered.filter(campaign =>
-        selectedFilters.includes(campaign.niche)
-      )
+      const filterSet = new Set(selectedFilters)
+      filtered = filtered.filter(campaign => filterSet.has(campaign.niche))
     }
 
-    // Apply sorting
+    // Apply sorting with optimized comparisons
     switch (sortBy) {
       case 'highest_commission':
-        filtered.sort((a, b) => b.commissionValue - a.commissionValue)
+        filtered.sort((a, b) => (b.commissionValue || 0) - (a.commissionValue || 0))
         break
       case 'deadline':
         filtered.sort((a, b) => new Date(a.deadline) - new Date(b.deadline))
@@ -83,29 +123,36 @@ const CampaignBrowser = () => {
     }
 
     setFilteredCampaigns(filtered)
-  }
-
-  const handleAcceptCampaign = async (campaignId) => {
+  }, [campaigns, searchQuery, selectedFilters, sortBy])
+const handleAcceptCampaign = useCallback(async (campaignId) => {
     try {
       await campaignService.update(campaignId, { status: 'accepted' })
-      setCampaigns(campaigns.map(c => 
+      setCampaigns(prev => prev.map(c => 
         c.Id === campaignId ? { ...c, status: 'accepted' } : c
       ))
     } catch (err) {
       setError('Failed to accept campaign')
     }
-  }
+  }, [])
 
-  const handleDeclineCampaign = async (campaignId) => {
+  const handleDeclineCampaign = useCallback(async (campaignId) => {
     try {
       await campaignService.update(campaignId, { status: 'declined' })
-      setCampaigns(campaigns.map(c => 
+      setCampaigns(prev => prev.map(c => 
         c.Id === campaignId ? { ...c, status: 'declined' } : c
       ))
     } catch (err) {
       setError('Failed to decline campaign')
     }
-  }
+  }, [])
+
+  const loadMoreCampaigns = useCallback(() => {
+    if (hasMore && !loadingMore) {
+      const nextPage = page + 1
+      setPage(nextPage)
+      loadCampaigns(nextPage, true)
+    }
+  }, [hasMore, loadingMore, page, loadCampaigns])
 
   if (loading) return <Loading type="cards" />
   if (error) return <Error message={error} onRetry={loadCampaigns} />
@@ -249,18 +296,22 @@ const CampaignBrowser = () => {
           transition={{ delay: 0.5 }}
           className="text-center"
         >
-          <Button
+<Button
             variant="outline"
             size="large"
             icon="ChevronDown"
-            onClick={() => {/* Load more campaigns */}}
+            onClick={loadMoreCampaigns}
+            loading={loadingMore}
+            disabled={!hasMore}
           >
-            Load More Campaigns
+            {hasMore ? 'Load More Campaigns' : 'All Campaigns Loaded'}
           </Button>
         </motion.div>
       )}
     </div>
   )
-}
+})
+
+CampaignBrowser.displayName = 'CampaignBrowser'
 
 export default CampaignBrowser

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { motion } from 'framer-motion'
 import StatCard from '@/components/molecules/StatCard'
 import CampaignCard from '@/components/molecules/CampaignCard'
@@ -9,55 +9,94 @@ import ApperIcon from '@/components/ApperIcon'
 import Button from '@/components/atoms/Button'
 import { campaignService } from '@/services/api/campaignService'
 
-const Dashboard = () => {
+const Dashboard = React.memo(() => {
   const [campaigns, setCampaigns] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [userType, setUserType] = useState('store') // This would come from context
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const [backgroundLoading, setBackgroundLoading] = useState(false)
+  const refreshTimeoutRef = useRef(null)
+
+  // Throttled refresh to prevent excessive API calls
+  const throttledRefresh = useCallback(() => {
+    if (refreshTimeoutRef.current) return
+    
+    refreshTimeoutRef.current = setTimeout(() => {
+      loadDashboardData(true)
+      refreshTimeoutRef.current = null
+    }, 1000)
+  }, [])
 
   useEffect(() => {
     loadDashboardData()
+    
+    // Cleanup timeout on unmount
+    return () => {
+      if (refreshTimeoutRef.current) {
+        clearTimeout(refreshTimeoutRef.current)
+      }
+    }
   }, [])
 
-  const loadDashboardData = async () => {
-    try {
-      setLoading(true)
-      setError('')
-      const data = await campaignService.getAll()
-      setCampaigns(data)
-    } catch (err) {
-      setError('Failed to load dashboard data')
-    } finally {
-      setLoading(false)
-    }
-  }
+  // Background refresh every 30 seconds for live data
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!loading) {
+        setBackgroundLoading(true)
+        loadDashboardData(false, true)
+      }
+    }, 30000)
 
-  const handleAcceptCampaign = async (campaignId) => {
+    return () => clearInterval(interval)
+  }, [loading])
+
+const loadDashboardData = useCallback(async (showLoading = true, isBackground = false) => {
+    try {
+      if (showLoading && !isBackground) setLoading(true)
+      setError('')
+      
+      // Use pagination for better performance
+      const data = await campaignService.getAll({ 
+        page: 1, 
+        limit: 12,
+        useCache: isBackground 
+      })
+      
+      setCampaigns(data.items || data)
+      setHasMore(data.hasMore || false)
+    } catch (err) {
+      if (!isBackground) setError('Failed to load dashboard data')
+    } finally {
+      if (showLoading && !isBackground) setLoading(false)
+      if (isBackground) setBackgroundLoading(false)
+    }
+  }, [])
+
+  const handleAcceptCampaign = useCallback(async (campaignId) => {
     try {
       await campaignService.update(campaignId, { status: 'accepted' })
-      setCampaigns(campaigns.map(c => 
+      setCampaigns(prev => prev.map(c => 
         c.Id === campaignId ? { ...c, status: 'accepted' } : c
       ))
     } catch (err) {
       setError('Failed to accept campaign')
     }
-  }
-
-  const handleDeclineCampaign = async (campaignId) => {
+  }, [])
+const handleDeclineCampaign = useCallback(async (campaignId) => {
     try {
       await campaignService.update(campaignId, { status: 'declined' })
-      setCampaigns(campaigns.map(c => 
+      setCampaigns(prev => prev.map(c => 
         c.Id === campaignId ? { ...c, status: 'declined' } : c
       ))
     } catch (err) {
       setError('Failed to decline campaign')
     }
-  }
+  }, [])
 
-  if (loading) return <Loading type="dashboard" />
-  if (error) return <Error message={error} onRetry={loadDashboardData} />
-
-  const stats = {
+  // Memoize stats to prevent unnecessary re-calculations
+  const stats = useMemo(() => ({
     store: [
       { title: 'Active Campaigns', value: '12', icon: 'Target', trend: 'up', trendValue: '+15%', color: 'primary' },
       { title: 'Total Revenue', value: '$4,250', icon: 'DollarSign', trend: 'up', trendValue: '+32%', color: 'success' },
@@ -70,9 +109,13 @@ const Dashboard = () => {
       { title: 'Completed Campaigns', value: '15', icon: 'CheckCircle', trend: 'up', trendValue: '+3', color: 'info' },
       { title: 'Success Rate', value: '94%', icon: 'TrendingUp', trend: 'up', trendValue: '+2%', color: 'warning' }
     ]
-  }
+  }), [])
 
-  const recentCampaigns = campaigns.slice(0, 6)
+  // Memoize recent campaigns to prevent unnecessary filtering
+  const recentCampaigns = useMemo(() => campaigns.slice(0, 6), [campaigns])
+
+  if (loading) return <Loading type="dashboard" />
+  if (error) return <Error message={error} onRetry={loadDashboardData} />
 
   return (
     <div className="space-y-8">
@@ -95,11 +138,11 @@ const Dashboard = () => {
         </div>
         
         <div className="flex items-center gap-3">
-          <Button
+<Button
             variant="secondary"
             icon="RefreshCw"
-            onClick={loadDashboardData}
-            loading={loading}
+            onClick={throttledRefresh}
+            loading={loading || backgroundLoading}
           >
             Refresh
           </Button>
@@ -229,9 +272,11 @@ const Dashboard = () => {
             <p className="text-gray-400">Chart will be implemented here</p>
           </div>
         </div>
-      </motion.div>
+</motion.div>
     </div>
   )
-}
+})
+
+Dashboard.displayName = 'Dashboard'
 
 export default Dashboard

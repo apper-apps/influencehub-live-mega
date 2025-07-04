@@ -1,16 +1,34 @@
+import React, { useMemo, useEffect } from 'react'
 import { motion } from 'framer-motion'
 
-const Loading = ({ type = 'dashboard' }) => {
-  const skeletonVariants = {
+const Loading = React.memo(({ type = 'dashboard', count = 6 }) => {
+  // Performance optimization: memoize animation variants
+  const skeletonVariants = useMemo(() => ({
     loading: {
       opacity: [1, 0.5, 1],
       transition: {
-        duration: 1.5,
+        duration: 1.2,
         repeat: Infinity,
         ease: "easeInOut"
       }
     }
-  }
+  }), [])
+
+  // Cleanup any pending animations on unmount
+  useEffect(() => {
+    return () => {
+      // Cancel any pending animation frames
+      if (typeof window !== 'undefined' && window.cancelAnimationFrame) {
+        // Animation cleanup handled by framer-motion
+      }
+    }
+  }, [])
+
+  // Memoize skeleton items to prevent recreation
+  const skeletonItems = useMemo(() => 
+    Array.from({ length: Math.min(count, 20) }, (_, i) => i), 
+    [count]
+  )
 
   if (type === 'dashboard') {
     return (
@@ -72,15 +90,16 @@ const Loading = ({ type = 'dashboard' }) => {
     )
   }
 
-  if (type === 'cards') {
+if (type === 'cards') {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[1, 2, 3, 4, 5, 6].map((i) => (
+        {skeletonItems.map((i) => (
           <motion.div
             key={i}
             variants={skeletonVariants}
             animate="loading"
             className="bg-surface p-6 rounded-lg border border-gray-700"
+            style={{ willChange: 'opacity' }}
           >
             <div className="w-full h-48 bg-gray-600 rounded mb-4 shimmer"></div>
             <div className="space-y-3">
@@ -91,6 +110,29 @@ const Loading = ({ type = 'dashboard' }) => {
                 <div className="h-8 bg-gray-600 rounded w-24 shimmer"></div>
               </div>
             </div>
+          </motion.div>
+        ))}
+      </div>
+    )
+  }
+
+  if (type === 'virtualized') {
+    return (
+      <div className="space-y-4">
+        {skeletonItems.slice(0, 10).map((i) => (
+          <motion.div
+            key={i}
+            variants={skeletonVariants}
+            animate="loading"
+            className="flex items-center gap-4 p-4 bg-surface rounded-lg border border-gray-700"
+            style={{ willChange: 'opacity' }}
+          >
+            <div className="w-12 h-12 bg-gray-600 rounded shimmer flex-shrink-0"></div>
+            <div className="flex-1 space-y-2">
+              <div className="h-4 bg-gray-600 rounded shimmer"></div>
+              <div className="h-3 bg-gray-600 rounded w-2/3 shimmer"></div>
+            </div>
+            <div className="w-20 h-6 bg-gray-600 rounded shimmer flex-shrink-0"></div>
           </motion.div>
         ))}
       </div>
@@ -127,15 +169,18 @@ const Loading = ({ type = 'dashboard' }) => {
     )
   }
 
-  return (
+return (
     <div className="flex items-center justify-center py-12">
       <motion.div
         variants={skeletonVariants}
         animate="loading"
         className="w-8 h-8 bg-primary rounded-full"
+        style={{ willChange: 'opacity' }}
       />
     </div>
   )
-}
+})
+
+Loading.displayName = 'Loading'
 
 export default Loading
