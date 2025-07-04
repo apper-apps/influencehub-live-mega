@@ -218,13 +218,12 @@ if (loading) return <Loading type="dashboard" />
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
       >
-        <div>
+<div>
           <h1 className="text-3xl font-bold text-white font-display">Wallet</h1>
           <p className="text-gray-400 mt-2">
-            Manage your earnings, deposits, and payout history
+            Manage your earnings, deposits, and payout history through the platform
           </p>
         </div>
-        
         <div className="flex items-center gap-3">
           <Button
             variant="secondary"

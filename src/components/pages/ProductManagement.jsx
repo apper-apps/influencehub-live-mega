@@ -230,13 +230,12 @@ setFormData({
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
       >
-        <div>
+<div>
           <h1 className="text-3xl font-bold text-white font-display">Product Management</h1>
           <p className="text-gray-400 mt-2">
-            Manage your products and create campaigns
+            Manage your products and create campaigns through the platform
           </p>
         </div>
-        
         <div className="flex items-center gap-3">
           <Button
             variant="secondary"

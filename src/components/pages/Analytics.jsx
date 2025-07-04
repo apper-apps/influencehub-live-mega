@@ -121,13 +121,12 @@ const Analytics = () => {
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
       >
-        <div>
+<div>
           <h1 className="text-3xl font-bold text-white font-display">Analytics</h1>
           <p className="text-gray-400 mt-2">
-            Track your performance and optimize your campaigns
+            Track your performance and optimize your campaigns through detailed insights
           </p>
         </div>
-        
         <div className="flex items-center gap-3">
           <select
             value={timeRange}
