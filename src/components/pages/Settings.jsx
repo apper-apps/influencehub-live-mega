@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import Loading from '@/components/ui/Loading'
-import Error from '@/components/ui/Error'
-import ApperIcon from '@/components/ApperIcon'
-import Button from '@/components/atoms/Button'
-import Input from '@/components/atoms/Input'
-import Badge from '@/components/atoms/Badge'
-import { settingsService } from '@/services/api/settingsService'
-import { toast } from 'react-toastify'
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import App from "@/App";
+import ApperIcon from "@/components/ApperIcon";
+import Badge from "@/components/atoms/Badge";
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
+import Error from "@/components/ui/Error";
+import Loading from "@/components/ui/Loading";
+import Analytics from "@/components/pages/Analytics";
+import { settingsService } from "@/services/api/settingsService";
 
 const Settings = () => {
   const [settings, setSettings] = useState(null)
@@ -41,7 +43,7 @@ const Settings = () => {
     }
   }
 
-  const saveSettings = async (updatedSettings) => {
+const saveSettings = async (updatedSettings) => {
     try {
       setSaving(true)
       await settingsService.updateSettings(updatedSettings)
@@ -52,9 +54,7 @@ const Settings = () => {
     } finally {
       setSaving(false)
     }
-}
   }
-
   const handlePlanChange = async (newTier) => {
     if (newTier === settings.subscriptionTier) return
     
@@ -94,12 +94,165 @@ const Settings = () => {
     }
   }
 
-  const handleInputChange = (field, value) => {
+const handleInputChange = (field, value) => {
     setSettings(prev => ({
       ...prev,
       [field]: value
     }))
-
+  }
+  // Social account helper functions
+  const getConnectedPlatforms = () => {
+    if (!settings?.socialAccounts) return []
+    return Object.entries(settings.socialAccounts)
+      .filter(([, account]) => account.connected)
+      .map(([platform]) => platform)
+  }
+  
+  const getPlatformDisplayName = (platform) => {
+    const names = {
+      youtube: 'YouTube',
+      tiktok: 'TikTok', 
+      facebook: 'Facebook',
+      instagram: 'Instagram',
+      twitter: 'Twitter',
+      linkedin: 'LinkedIn'
+    }
+    return names[platform] || platform
+  }
+  
+  const handleSocialConnect = async (platform) => {
+    try {
+      setSaving(true)
+      await settingsService.connectSocialAccount(platform)
+      const updatedSettings = await settingsService.getSettings()
+      setSettings(updatedSettings)
+      toast.success(`Successfully connected ${getPlatformDisplayName(platform)}`)
+    } catch (err) {
+      toast.error(`Failed to connect ${getPlatformDisplayName(platform)}`)
+    } finally {
+      setSaving(false)
+    }
+  }
+  
+  const handleSocialDisconnect = async (platform) => {
+    const connectedCount = getConnectedPlatforms().length
+    if (connectedCount <= 2) {
+      const confirmMessage = connectedCount === 2 
+        ? `Disconnecting ${getPlatformDisplayName(platform)} will make you fall below the minimum requirement of 2 platforms. This may affect your verification status. Continue?`
+        : `Disconnecting ${getPlatformDisplayName(platform)} will reduce your connected platforms. Continue?`
+      
+      if (!window.confirm(confirmMessage)) return
+    }
+    
+    try {
+      setSaving(true)
+      await settingsService.disconnectSocialAccount(platform)
+      const updatedSettings = await settingsService.getSettings()
+      setSettings(updatedSettings)
+      toast.success(`Successfully disconnected ${getPlatformDisplayName(platform)}`)
+      
+      if (getConnectedPlatforms().length < 2) {
+        toast.warning('You now have fewer than 2 connected platforms. Please connect more to maintain verification status.')
+      }
+    } catch (err) {
+      toast.error(`Failed to disconnect ${getPlatformDisplayName(platform)}`)
+    } finally {
+      setSaving(false)
+    }
+  }
+  
+  const renderSocialPlatform = (platform, iconName, color, accountData) => {
+    const isConnected = accountData?.connected || false
+    const isVerified = accountData?.verified || false
+    const followerCount = accountData?.followerCount || 0
+    const username = accountData?.username || ''
+    
+    return (
+      <div key={platform} className="bg-gray-700 rounded-lg p-4 border border-gray-600">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-3">
+            <div 
+              className="w-10 h-10 rounded-lg flex items-center justify-center"
+              style={{ backgroundColor: color }}
+            >
+              <ApperIcon name={iconName} size={20} className="text-white" />
+            </div>
+            <div>
+              <h5 className="font-medium text-white">{getPlatformDisplayName(platform)}</h5>
+              {isConnected && (
+                <p className="text-sm text-gray-400">@{username}</p>
+              )}
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            {isConnected && isVerified && (
+              <Badge variant="success" size="small">
+                <ApperIcon name="CheckCircle" size={12} className="mr-1" />
+                Verified
+              </Badge>
+            )}
+            {isConnected && !isVerified && (
+              <Badge variant="warning" size="small">
+                <ApperIcon name="Clock" size={12} className="mr-1" />
+                Pending
+              </Badge>
+            )}
+          </div>
+        </div>
+        
+        {isConnected && (
+          <div className="mb-3">
+            <div className="flex items-center gap-2 text-sm text-gray-400">
+              <ApperIcon name="Users" size={14} />
+              <span>{followerCount.toLocaleString()} followers</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
+              <ApperIcon name="Calendar" size={12} />
+              <span>Connected {new Date(accountData.connectedAt).toLocaleDateString()}</span>
+            </div>
+          </div>
+        )}
+        
+        <div className="flex gap-2">
+          {isConnected ? (
+            <>
+              <Button
+                variant="danger"
+                size="small"
+                className="flex-1"
+                onClick={() => handleSocialDisconnect(platform)}
+                disabled={saving}
+              >
+                <ApperIcon name="Unlink" size={14} className="mr-1" />
+                Disconnect
+              </Button>
+              {!isVerified && (
+                <Button
+                  variant="outline"
+                  size="small"
+                  onClick={() => toast.info('Verification in progress. This usually takes 24-48 hours.')}
+                >
+                  <ApperIcon name="RefreshCw" size={14} />
+                </Button>
+              )}
+            </>
+          ) : (
+            <Button
+              variant="primary"
+              size="small"
+              className="w-full"
+              onClick={() => handleSocialConnect(platform)}
+              disabled={saving}
+            >
+              <ApperIcon name="Link" size={14} className="mr-1" />
+              Connect
+            </Button>
+          )}
+        </div>
+      </div>
+    )
+  }
   const renderTabContent = () => {
     if (!settings) return null
 
@@ -228,9 +381,9 @@ const Settings = () => {
               </div>
             </div>
           </div>
-        )
+)
 
-case 'billing':
+      case 'billing':
         return (
           <div className="space-y-6">
             <h3 className="text-lg font-semibold text-white">Subscription Management</h3>
@@ -533,7 +686,7 @@ case 'billing':
               </div>
             </div>
           </div>
-        )
+)
 
       case 'security':
         return (
@@ -572,6 +725,73 @@ case 'billing':
                   <Badge variant="warning">Not Enabled</Badge>
                 </div>
                 <Button variant="primary">Enable 2FA</Button>
+              </div>
+              
+              {/* Social Account Verification Section */}
+              <div className="bg-gray-800 rounded-lg p-6">
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-medium text-white">Social Account Verification</h4>
+                    <Badge 
+                      variant={getConnectedPlatforms().length >= 2 ? "success" : "warning"}
+                      size="small"
+                    >
+                      {getConnectedPlatforms().length >= 2 ? "Verified" : "Incomplete"}
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-gray-400 mb-4">
+                    Link at least 2 social media accounts to verify your influencer status and unlock full platform features.
+                  </p>
+                  
+                  {/* Progress Indicator */}
+                  <div className="mb-6">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm text-gray-400">Verification Progress</span>
+                      <span className="text-sm text-white">
+                        {getConnectedPlatforms().length}/2 minimum required
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-700 rounded-full h-2">
+                      <div 
+                        className={`h-2 rounded-full transition-all duration-300 ${
+                          getConnectedPlatforms().length >= 2 
+                            ? 'bg-gradient-to-r from-success to-accent' 
+                            : 'bg-gradient-to-r from-warning to-error'
+                        }`}
+                        style={{ width: `${Math.min((getConnectedPlatforms().length / 2) * 100, 100)}%` }}
+                      ></div>
+                    </div>
+                    {getConnectedPlatforms().length < 2 && (
+                      <p className="text-xs text-warning mt-1">
+                        Connect {2 - getConnectedPlatforms().length} more platform(s) to complete verification
+                      </p>
+                    )}
+                  </div>
+                </div>
+                
+                {/* Social Platforms Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {renderSocialPlatform('youtube', 'Youtube', '#FF0000', settings.socialAccounts?.youtube)}
+                  {renderSocialPlatform('tiktok', 'Video', '#000000', settings.socialAccounts?.tiktok)}
+                  {renderSocialPlatform('facebook', 'Facebook', '#1877F2', settings.socialAccounts?.facebook)}
+                  {renderSocialPlatform('instagram', 'Instagram', '#E4405F', settings.socialAccounts?.instagram)}
+                  {renderSocialPlatform('twitter', 'Twitter', '#1DA1F2', settings.socialAccounts?.twitter)}
+                  {renderSocialPlatform('linkedin', 'Linkedin', '#0A66C2', settings.socialAccounts?.linkedin)}
+                </div>
+                
+                {getConnectedPlatforms().length >= 2 && (
+                  <div className="mt-6 p-4 bg-success/10 border border-success/20 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <ApperIcon name="CheckCircle" size={20} className="text-success" />
+                      <div>
+                        <p className="text-success font-medium">Verification Complete!</p>
+                        <p className="text-sm text-success/80">
+                          You have successfully linked {getConnectedPlatforms().length} social accounts and verified your influencer status.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
               
               <div className="bg-gray-800 rounded-lg p-6">

@@ -17,8 +17,58 @@
   "timezone": "UTC",
   "currency": "USD",
   "twoFactorEnabled": false,
-  "paypalEmail": "yphoeniex.ent@gmail.com",
-"subscriptionTier": "pro",
+"paypalEmail": "yphoeniex.ent@gmail.com",
+  "socialAccounts": {
+    "youtube": {
+      "connected": true,
+      "verified": true,
+      "username": "TechReviewer2024",
+      "followerCount": 125000,
+      "connectedAt": "2024-01-15T10:30:00Z",
+      "lastVerified": "2024-01-20T14:22:00Z"
+    },
+    "instagram": {
+      "connected": true,
+      "verified": true,
+      "username": "daily_inspiration",
+      "followerCount": 156000,
+      "connectedAt": "2024-01-18T16:45:00Z",
+      "lastVerified": "2024-01-25T09:15:00Z"
+    },
+    "tiktok": {
+      "connected": false,
+      "verified": false,
+      "username": null,
+      "followerCount": 0,
+      "connectedAt": null,
+      "lastVerified": null
+    },
+    "facebook": {
+      "connected": false,
+      "verified": false,
+      "username": null,
+      "followerCount": 0,
+      "connectedAt": null,
+      "lastVerified": null
+    },
+    "twitter": {
+      "connected": false,
+      "verified": false,
+      "username": null,
+      "followerCount": 0,
+      "connectedAt": null,
+      "lastVerified": null
+    },
+    "linkedin": {
+      "connected": false,
+      "verified": false,
+      "username": null,
+      "followerCount": 0,
+      "connectedAt": null,
+      "lastVerified": null
+    }
+  },
+  "subscriptionTier": "pro",
   "subscriptionExpiry": "2024-12-31T23:59:59Z",
   "autoRenewal": true,
   "invoiceEmail": "john.doe@example.com",

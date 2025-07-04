@@ -111,9 +111,76 @@ const imageUrl = URL.createObjectURL(file)
     return { ...this.settings }
   }
 
+async getSocialAccounts() {
+    await this.delay(200)
+    return { ...this.settings.socialAccounts }
+  }
+  
+  async connectSocialAccount(platform) {
+    await this.delay(800) // Simulate OAuth flow
+    
+    const validPlatforms = ['youtube', 'tiktok', 'facebook', 'instagram', 'twitter', 'linkedin']
+    if (!validPlatforms.includes(platform)) {
+      throw new Error('Invalid social platform')
+    }
+    
+    // Simulate connection success
+    if (!this.settings.socialAccounts) {
+      this.settings.socialAccounts = {}
+    }
+    
+    // Generate mock data for connected account
+    const mockAccountData = {
+      youtube: { username: 'TechReviewer2024', followerCount: 125000 },
+      tiktok: { username: 'lifestyle_creator', followerCount: 89000 },
+      facebook: { username: 'BrandInfluencer', followerCount: 45000 },
+      instagram: { username: 'daily_inspiration', followerCount: 156000 },
+      twitter: { username: 'thought_leader', followerCount: 34000 },
+      linkedin: { username: 'business_expert', followerCount: 12000 }
+    }
+    
+    this.settings.socialAccounts[platform] = {
+      connected: true,
+      verified: Math.random() > 0.3, // 70% chance of immediate verification
+      username: mockAccountData[platform].username,
+      followerCount: mockAccountData[platform].followerCount,
+      connectedAt: new Date().toISOString(),
+      lastVerified: Math.random() > 0.3 ? new Date().toISOString() : null
+    }
+    
+    return { ...this.settings }
+  }
+  
+  async disconnectSocialAccount(platform) {
+    await this.delay(400)
+    
+    if (!this.settings.socialAccounts?.[platform]) {
+      throw new Error('Account not connected')
+    }
+    
+    // Remove the social account
+    delete this.settings.socialAccounts[platform]
+    
+    return { ...this.settings }
+  }
+  
+  async verifySocialAccount(platform) {
+    await this.delay(1000)
+    
+    if (!this.settings.socialAccounts?.[platform]?.connected) {
+      throw new Error('Account not connected')
+    }
+    
+    // Mark as verified
+    this.settings.socialAccounts[platform].verified = true
+    this.settings.socialAccounts[platform].lastVerified = new Date().toISOString()
+    
+    return { ...this.settings }
+  }
+
   delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
-}
+  }
 }
 
 export const settingsService = new SettingsService()
