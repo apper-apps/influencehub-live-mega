@@ -25,14 +25,13 @@ const LandingPage = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const animateStats = () => {
+const animateStats = () => {
     const finalStats = {
-      affiliates: 10000,
-      campaigns: 5000,
-      revenue: 2500000,
-      conversion: 15.8
+      affiliates: 1000,
+      campaigns: 500,
+      revenue: 250000,
+      conversion: 95
     };
-
     const duration = 2000;
     const steps = 60;
     const increment = {
@@ -133,17 +132,17 @@ return (
         <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 opacity-50"></div>
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="mb-8">
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-6">
+<h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-6">
               Welcome to{' '}
               <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Phoenix Hub
-</span>
+                Yphoeniex Influencer Hub
+              </span>
             </h1>
             <p className="text-xl sm:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-              The automated platform for Brands, Stores, and Influencers to streamline partnerships and maximize growth
+              The comprehensive platform for Brands, Stores, and Influencers to streamline partnerships and maximize growth
             </p>
-            <div className="text-sm text-gray-400 mb-4">
-              Access Phoenix Hub directly through your web browser • No downloads required
+<div className="text-sm text-gray-400 mb-4">
+              Access Yphoeniex Influencer Hub directly through your web browser • No downloads required
             </div>
           </div>
 
@@ -169,30 +168,30 @@ return (
           </div>
 
           {/* Stats Section */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+<div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
             <div className="text-center">
               <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
-                {stats.affiliates?.toLocaleString() || '0'}+
+                1000+
               </div>
               <div className="text-gray-400">Active Users</div>
             </div>
             <div className="text-center">
               <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
-                {stats.campaigns?.toLocaleString() || '0'}+
+                500+
               </div>
-              <div className="text-gray-400">Web Campaigns</div>
+              <div className="text-gray-400">Platform Campaigns</div>
             </div>
             <div className="text-center">
               <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
-                ${stats.revenue?.toLocaleString() || '0'}+
+                $250K+
               </div>
-              <div className="text-gray-400">Revenue Generated</div>
+              <div className="text-gray-400">Platform Revenue</div>
             </div>
             <div className="text-center">
               <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
-                {stats.conversion || '0'}%
+                95%
               </div>
-              <div className="text-gray-400">Avg. Conversion</div>
+              <div className="text-gray-400">User Satisfaction</div>
             </div>
           </div>
         </div>
@@ -203,10 +202,10 @@ return (
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Globe className="w-6 h-6 text-primary" />
-            <h3 className="text-xl font-semibold text-white">Browser-Based Platform</h3>
+<h3 className="text-xl font-semibold text-white">Browser-Based Platform</h3>
           </div>
           <p className="text-gray-300 max-w-2xl mx-auto">
-            Phoenix Hub is a responsive application accessible through any modern browser. 
+            Yphoeniex Influencer Hub is a responsive application accessible through any modern browser. 
             Works seamlessly on desktop, tablet, and mobile devices without requiring any downloads or installations.
           </p>
         </div>
@@ -217,10 +216,10 @@ return (
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
 <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Why Choose Phoenix Hub?
+              Why Choose Yphoeniex Influencer Hub?
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Powerful automated features designed to streamline connections between Brands, Stores, and Influencers
+              Powerful features designed to streamline connections between Brands, Stores, and Influencers
             </p>
           </div>
 
@@ -319,10 +318,9 @@ return (
               <div className="text-left">
                 <h4 className="text-white font-medium mb-2">Platform Information</h4>
                 <p className="text-gray-400 text-sm leading-relaxed">
-                  Phoenix Hub is a browser-based application accessible through modern browsers. 
-                  We are not affiliated with any mobile app stores. All features and services are 
-                  provided through our secure platform. Compatible with Chrome, Firefox, Safari, 
-                  and Edge browsers on desktop and mobile devices.
+                  Yphoeniex Influencer Hub is a browser-based application accessible through modern browsers. 
+                  All features and services are provided through our secure web platform. 
+                  Compatible with Chrome, Firefox, Safari, and Edge browsers on desktop and mobile devices.
                 </p>
               </div>
             </div>
@@ -334,8 +332,8 @@ return (
 <footer className="border-t border-gray-800 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-white mb-2">Phoenix Hub</h3>
-            <p className="text-gray-400 mb-4">Automated Platform for Brands, Stores, and Influencers</p>
+<h3 className="text-2xl font-bold text-white mb-2">Yphoeniex Influencer Hub</h3>
+            <p className="text-gray-400 mb-4">Comprehensive Platform for Brands, Stores, and Influencers</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
@@ -372,7 +370,7 @@ return (
           
           <div className="border-t border-gray-700 pt-8 text-center">
             <p className="text-gray-400 text-sm">
-              © 2024 Phoenix Hub. All rights reserved. This is a web-based platform accessible through browsers.
+© 2024 Yphoeniex Influencer Hub. All rights reserved. This is a web-based platform accessible through browsers.
             </p>
           </div>
         </div>

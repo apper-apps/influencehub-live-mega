@@ -117,7 +117,7 @@ const AffiliateCommissions = () => {
             Commission Management
           </h1>
           <p className="text-gray-400 mt-1">
-            Track earnings and manage payouts through the platform
+            Track earnings and manage payouts through Yphoeniex Influencer Hub
           </p>
         </div>
         <Button

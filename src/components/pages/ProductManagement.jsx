@@ -233,7 +233,7 @@ setFormData({
 <div>
           <h1 className="text-3xl font-bold text-white font-display">Product Management</h1>
           <p className="text-gray-400 mt-2">
-            Manage your products and create authentic influencer marketing campaigns
+            Manage your products and create marketing campaigns through Yphoeniex Influencer Hub
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -267,10 +267,10 @@ setFormData({
               <h2 className="text-xl font-bold text-white">
                 {editingProduct ? 'Edit Product' : 'Add New Product'}
               </h2>
-              {formData.smartMatch && (
+{formData.smartMatch && (
                 <div className="flex items-center gap-2 bg-gradient-to-r from-primary/20 to-secondary/20 px-3 py-1 rounded-full">
                   <ApperIcon name="Brain" size={16} className="text-primary" />
-                  <span className="text-sm font-medium text-primary">SmartMatch+ AI</span>
+                  <span className="text-sm font-medium text-primary">SmartMatch AI</span>
                 </div>
               )}
             </div>
@@ -351,12 +351,12 @@ setFormData({
 />
 
             {/* SmartMatch+ AI Toggle */}
-            <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-4 border border-primary/20">
+<div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-4 border border-primary/20">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <ApperIcon name="Brain" size={18} className="text-primary" />
-                  <span className="font-medium text-white">SmartMatch+ AI</span>
-                  <Badge variant="success" size="small">NEW</Badge>
+                  <span className="font-medium text-white">SmartMatch AI</span>
+                  <Badge variant="success" size="small">BETA</Badge>
                 </div>
                 <button
                   type="button"
@@ -474,10 +474,10 @@ setFormData({
                             (+{((formData.boostMultiplier - 1) * 100)}% visibility)
                           </span>
                         </div>
-                        <div className="text-right">
+<div className="text-right">
                           <div className="text-sm text-gray-400">Estimated cost</div>
                           <div className="text-lg font-bold text-warning">
-                            ${(formData.boostMultiplier * 10).toFixed(2)}/day
+                            Contact for pricing
                           </div>
                         </div>
                       </div>
@@ -595,13 +595,13 @@ setFormData({
           animate={{ opacity: 1, y: 0 }}
           className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg border border-primary/20 p-6"
         >
-          <div className="flex items-center justify-between mb-6">
+<div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
                 <ApperIcon name="Brain" size={20} className="text-white" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-white">SmartMatch+ AI Recommendations</h3>
+                <h3 className="text-xl font-bold text-white">SmartMatch AI Recommendations</h3>
                 <p className="text-sm text-gray-400">
                   {recommendations.length} perfect matches found for your {formData.niche || 'product'} niche
                 </p>

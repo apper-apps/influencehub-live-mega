@@ -19,6 +19,9 @@ const AffiliateCommissions = lazy(() => import('@/components/pages/AffiliateComm
 
 const App = React.memo(() => {
   useEffect(() => {
+    // Set document title for consistent branding
+    document.title = 'Yphoeniex Influencer Hub'
+    
     // Register service worker for PWA
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js')

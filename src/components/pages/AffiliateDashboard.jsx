@@ -81,7 +81,7 @@ const AffiliateDashboard = () => {
             Affiliate Dashboard
           </h1>
           <p className="text-gray-400 mt-1">
-            Track your referrals and earnings through the platform
+            Track your referrals and earnings through Yphoeniex Influencer Hub
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -312,9 +312,9 @@ const AffiliateDashboard = () => {
             </div>
             <div>
               <h3 className="text-xl font-bold text-white mb-2">Your Referral Code</h3>
-              <p className="text-3xl font-bold text-primary font-mono">{affiliate?.referralCode}</p>
+<p className="text-3xl font-bold text-primary font-mono">{affiliate?.referralCode}</p>
               <p className="text-gray-400 mt-2">
-                Share this code to earn 50% commission on successful referrals
+                Share this code to earn commission on successful referrals
               </p>
             </div>
             <Button
