@@ -14,7 +14,14 @@
     "activeCampaigns": 2,
     "totalViews": 1250,
     "totalSales": 34,
-    "createdAt": "2024-01-15T10:00:00Z"
+    "createdAt": "2024-01-15T10:00:00Z",
+    "smartMatch": true,
+    "targetAudience": "Young professionals, tech enthusiasts",
+    "contentStyle": "professional",
+    "engagementTier": "medium",
+    "qualityScore": 4,
+    "boostActive": false,
+    "boostMultiplier": 1.0
   },
   {
     "Id": 2,
@@ -31,7 +38,14 @@
     "activeCampaigns": 1,
     "totalViews": 890,
     "totalSales": 28,
-    "createdAt": "2024-01-12T14:30:00Z"
+    "createdAt": "2024-01-12T14:30:00Z",
+    "smartMatch": true,
+    "targetAudience": "Women 25-40, skincare enthusiasts",
+    "contentStyle": "authentic",
+    "engagementTier": "high",
+    "qualityScore": 5,
+    "boostActive": true,
+    "boostMultiplier": 1.5
   },
   {
     "Id": 3,
@@ -48,7 +62,14 @@
     "activeCampaigns": 3,
     "totalViews": 1580,
     "totalSales": 52,
-    "createdAt": "2024-01-10T09:15:00Z"
+    "createdAt": "2024-01-10T09:15:00Z",
+    "smartMatch": false,
+    "targetAudience": "",
+    "contentStyle": "",
+    "engagementTier": "medium",
+    "qualityScore": 3,
+    "boostActive": false,
+    "boostMultiplier": 1.0
   },
   {
     "Id": 4,
@@ -65,7 +86,14 @@
     "activeCampaigns": 1,
     "totalViews": 670,
     "totalSales": 19,
-    "createdAt": "2024-01-18T16:45:00Z"
+    "createdAt": "2024-01-18T16:45:00Z",
+    "smartMatch": true,
+    "targetAudience": "Eco-conscious millennials, Gen Z",
+    "contentStyle": "creative",
+    "engagementTier": "high",
+    "qualityScore": 4,
+    "boostActive": true,
+    "boostMultiplier": 2.0
   },
   {
     "Id": 5,
@@ -82,7 +110,14 @@
     "activeCampaigns": 2,
     "totalViews": 1120,
     "totalSales": 41,
-    "createdAt": "2024-01-08T11:20:00Z"
+    "createdAt": "2024-01-08T11:20:00Z",
+    "smartMatch": true,
+    "targetAudience": "Gamers, streamers, tech enthusiasts",
+    "contentStyle": "entertaining",
+    "engagementTier": "premium",
+    "qualityScore": 5,
+    "boostActive": false,
+    "boostMultiplier": 1.0
   },
   {
     "Id": 6,
@@ -99,6 +134,13 @@
     "activeCampaigns": 1,
     "totalViews": 450,
     "totalSales": 67,
-    "createdAt": "2024-01-20T08:00:00Z"
+    "createdAt": "2024-01-20T08:00:00Z",
+    "smartMatch": true,
+    "targetAudience": "Coffee lovers, remote workers",
+    "contentStyle": "educational",
+    "engagementTier": "medium",
+    "qualityScore": 4,
+    "boostActive": true,
+    "boostMultiplier": 1.5
   }
 ]
