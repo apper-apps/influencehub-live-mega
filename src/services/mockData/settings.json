@@ -18,8 +18,62 @@
   "currency": "USD",
   "twoFactorEnabled": false,
   "paypalEmail": "yphoeniex.ent@gmail.com",
-  "subscriptionTier": "pro",
+"subscriptionTier": "pro",
   "subscriptionExpiry": "2024-12-31T23:59:59Z",
   "autoRenewal": true,
-  "invoiceEmail": "john.doe@example.com"
+  "invoiceEmail": "john.doe@example.com",
+  "usedSlots": 8,
+  "totalSlots": 999,
+  "billingCycle": "monthly",
+  "nextBillingDate": "2024-03-01T00:00:00Z",
+  "subscriptionFeatures": {
+    "free": {
+      "slots": 2,
+      "analytics": "basic",
+      "support": "email",
+      "templates": false,
+      "api": false,
+      "collaboration": false,
+      "ai": false,
+      "manager": false,
+      "integrations": false,
+      "whiteLabel": false
+    },
+    "starter": {
+      "slots": 5,
+      "analytics": "advanced",
+      "support": "priority",
+      "templates": true,
+      "api": false,
+      "collaboration": false,
+      "ai": false,
+      "manager": false,
+      "integrations": false,
+      "whiteLabel": false
+    },
+    "growth": {
+      "slots": 10,
+      "analytics": "realtime",
+      "support": "24/7",
+      "templates": true,
+      "api": true,
+      "collaboration": true,
+      "ai": false,
+      "manager": false,
+      "integrations": false,
+      "whiteLabel": false
+    },
+    "pro": {
+      "slots": 999,
+      "analytics": "ai-powered",
+      "support": "dedicated",
+      "templates": true,
+      "api": true,
+      "collaboration": true,
+      "ai": true,
+      "manager": true,
+      "integrations": true,
+      "whiteLabel": true
+    }
+  }
 }
