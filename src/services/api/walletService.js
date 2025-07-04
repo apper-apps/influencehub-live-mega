@@ -1,4 +1,6 @@
-import walletData from '@/services/mockData/wallet.json'
+import React from "react";
+import Error from "@/components/ui/Error";
+import walletData from "@/services/mockData/wallet.json";
 
 class WalletService {
   constructor() {
@@ -57,6 +59,29 @@ class WalletService {
     this.wallet.availableBalance += amount
     this.wallet.totalEarned += amount
     
+return { ...transaction }
+  }
+
+  async addDeposit(amount, paymentMethod = 'PayPal') {
+    await this.delay(400)
+    
+    if (amount <= 0) {
+      throw new Error('Invalid deposit amount')
+    }
+    
+    const transaction = {
+      Id: Math.max(...this.transactions.map(t => t.Id)) + 1,
+      type: 'deposit',
+      amount: amount,
+      description: `Deposit via ${paymentMethod}`,
+      campaignName: 'System',
+      status: 'completed',
+      timestamp: new Date().toISOString()
+    }
+    
+    this.transactions.unshift(transaction)
+    this.wallet.availableBalance += amount
+    
     return { ...transaction }
   }
 
@@ -65,4 +90,4 @@ class WalletService {
   }
 }
 
-export const walletService = new WalletService()
+export default new WalletService()

@@ -1,22 +1,26 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import StatCard from '@/components/molecules/StatCard'
-import Loading from '@/components/ui/Loading'
-import Error from '@/components/ui/Error'
-import Empty from '@/components/ui/Empty'
-import ApperIcon from '@/components/ApperIcon'
-import Button from '@/components/atoms/Button'
-import Badge from '@/components/atoms/Badge'
-import { walletService } from '@/services/api/walletService'
-import { toast } from 'react-toastify'
-
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Badge from "@/components/atoms/Badge";
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
+import Input from "@/components/atoms/Input";
+import Empty from "@/components/ui/Empty";
+import Error from "@/components/ui/Error";
+import Loading from "@/components/ui/Loading";
+import StatCard from "@/components/molecules/StatCard";
+import { walletService } from "@/services/api/walletService";
 const Wallet = () => {
   const [walletData, setWalletData] = useState(null)
   const [transactions, setTransactions] = useState([])
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+const [error, setError] = useState('')
   const [processingPayout, setProcessingPayout] = useState(false)
-
+  const [showDepositModal, setShowDepositModal] = useState(false)
+  const [depositAmount, setDepositAmount] = useState('')
+  const [processingDeposit, setProcessingDeposit] = useState(false)
+  const [paypalLoaded, setPaypalLoaded] = useState(false)
   useEffect(() => {
     loadWalletData()
   }, [])
@@ -56,10 +60,11 @@ const Wallet = () => {
     }
   }
 
-  const getTransactionIcon = (type) => {
+const getTransactionIcon = (type) => {
     switch (type) {
       case 'earning': return 'Plus'
       case 'payout': return 'Minus'
+      case 'deposit': return 'ArrowDown'
       case 'bonus': return 'Gift'
       case 'refund': return 'RotateCcw'
       default: return 'DollarSign'
@@ -70,6 +75,7 @@ const Wallet = () => {
     switch (type) {
       case 'earning': return 'text-success'
       case 'payout': return 'text-error'
+      case 'deposit': return 'text-info'
       case 'bonus': return 'text-warning'
       case 'refund': return 'text-info'
       default: return 'text-gray-400'
@@ -89,11 +95,94 @@ const Wallet = () => {
       hour: '2-digit',
       minute: '2-digit'
     })
+}
+
+  // PayPal Integration
+  useEffect(() => {
+    loadPayPalScript()
+  }, [])
+
+  const loadPayPalScript = async () => {
+    try {
+      if (window.paypal) {
+        setPaypalLoaded(true)
+        return
+      }
+
+      const script = document.createElement('script')
+      script.src = `https://www.paypal.com/sdk/js?client-id=${import.meta.env.VITE_PAYPAL_CLIENT_ID}&currency=USD&components=buttons`
+      script.async = true
+      
+      script.onload = () => {
+        setPaypalLoaded(true)
+      }
+      
+      script.onerror = () => {
+        toast.error('Failed to load PayPal SDK')
+      }
+      
+      document.head.appendChild(script)
+    } catch (error) {
+      toast.error('Error initializing PayPal')
+    }
   }
+
+  const handleDepositClick = () => {
+    setShowDepositModal(true)
+    setDepositAmount('')
+  }
+
+  const handleDepositSubmit = async (amount) => {
+    if (!amount || amount <= 0) {
+      toast.error('Please enter a valid deposit amount')
+      return
+    }
+
+    try {
+      setProcessingDeposit(true)
+      await walletService.addDeposit(parseFloat(amount))
+      toast.success(`Successfully deposited $${amount}`)
+      setShowDepositModal(false)
+      setDepositAmount('')
+      loadWalletData()
+    } catch (err) {
+      toast.error('Failed to process deposit')
+    } finally {
+      setProcessingDeposit(false)
+    }
+  }
+
+  const createPayPalOrder = (data, actions) => {
+    const amount = parseFloat(depositAmount)
+    if (!amount || amount <= 0) {
+      toast.error('Please enter a valid amount')
+      return
+    }
+
+    return actions.order.create({
+      purchase_units: [{
+        amount: {
+          value: amount.toString()
+        },
+        description: 'Wallet Deposit'
+      }]
+    })
+  }
+
+  const onPayPalApprove = async (data, actions) => {
+    try {
+      const order = await actions.order.capture()
+      const amount = parseFloat(order.purchase_units[0].amount.value)
+      await handleDepositSubmit(amount)
+    } catch (error) {
+      toast.error('PayPal payment failed')
+    }
+  }
+
+if (loading) return <Loading type="dashboard" />
 
   if (loading) return <Loading type="dashboard" />
   if (error) return <Error message={error} onRetry={loadWalletData} />
-
   const stats = [
     { 
       title: 'Available Balance', 
@@ -119,7 +208,7 @@ const Wallet = () => {
       icon: 'Calendar', 
       color: 'info' 
     }
-  ]
+]
 
   return (
     <div className="space-y-8">
@@ -132,7 +221,7 @@ const Wallet = () => {
         <div>
           <h1 className="text-3xl font-bold text-white font-display">Wallet</h1>
           <p className="text-gray-400 mt-2">
-            Manage your earnings and payout history
+            Manage your earnings, deposits, and payout history
           </p>
         </div>
         
@@ -144,6 +233,14 @@ const Wallet = () => {
             loading={loading}
           >
             Refresh
+          </Button>
+
+          <Button
+            variant="info"
+            icon="Plus"
+            onClick={handleDepositClick}
+          >
+            Add Funds
           </Button>
           
           <Button
@@ -215,7 +312,109 @@ const Wallet = () => {
             </div>
           </div>
         </div>
-      </motion.div>
+</motion.div>
+
+      {/* Deposit Modal */}
+      {showDepositModal && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          onClick={(e) => e.target === e.currentTarget && setShowDepositModal(false)}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            className="bg-surface rounded-lg border border-gray-700 p-6 w-full max-w-md"
+          >
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-white">Add Funds</h3>
+              <button
+                onClick={() => setShowDepositModal(false)}
+                className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+              >
+                <ApperIcon name="X" size={16} className="text-gray-400" />
+              </button>
+            </div>
+
+            <div className="space-y-6">
+              <Input
+                label="Deposit Amount"
+                type="number"
+                placeholder="Enter amount (USD)"
+                value={depositAmount}
+                onChange={(e) => setDepositAmount(e.target.value)}
+                icon="DollarSign"
+                min="1"
+                step="0.01"
+              />
+
+              <div className="space-y-4">
+                <h4 className="font-medium text-white">Payment Method</h4>
+                
+                {paypalLoaded ? (
+                  <div className="space-y-3">
+                    <div 
+                      id="paypal-button-container"
+                      ref={(el) => {
+                        if (el && window.paypal && depositAmount && parseFloat(depositAmount) > 0) {
+                          el.innerHTML = ''
+                          window.paypal.Buttons({
+                            createOrder: createPayPalOrder,
+                            onApprove: onPayPalApprove,
+                            onError: (err) => {
+                              toast.error('PayPal payment error')
+                            },
+                            style: {
+                              layout: 'vertical',
+                              color: 'blue',
+                              shape: 'rect',
+                              label: 'paypal'
+                            }
+                          }).render(el)
+                        }
+                      }}
+                    />
+                    
+                    {(!depositAmount || parseFloat(depositAmount) <= 0) && (
+                      <p className="text-sm text-gray-400 text-center">
+                        Enter an amount above to see PayPal payment options
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center p-4 bg-gray-800 rounded-lg">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mr-3"></div>
+                    <span className="text-gray-400">Loading PayPal...</span>
+                  </div>
+                )}
+
+                <Button
+                  variant="secondary"
+                  className="w-full"
+                  onClick={() => handleDepositSubmit(depositAmount)}
+                  disabled={!depositAmount || parseFloat(depositAmount) <= 0 || processingDeposit}
+                  loading={processingDeposit}
+                >
+                  Manual Deposit (Demo)
+                </Button>
+              </div>
+
+              <div className="bg-gray-800 rounded-lg p-4">
+                <div className="flex items-start gap-2">
+                  <ApperIcon name="Info" size={16} className="text-info mt-0.5" />
+                  <div className="text-sm text-gray-400">
+                    <p className="font-medium text-white mb-1">Secure Payments</p>
+                    <p>All transactions are processed securely through PayPal. Your payment information is never stored on our servers.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* Transaction History */}
       <motion.div
@@ -239,7 +438,7 @@ const Wallet = () => {
             type="general"
             icon="Receipt"
             title="No transactions yet"
-            description="Your transaction history will appear here once you start earning"
+            description="Your transaction history will appear here once you start earning or making deposits"
           />
         ) : (
           <div className="space-y-4">
@@ -253,6 +452,7 @@ const Wallet = () => {
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
                   transaction.type === 'earning' ? 'bg-success/20' :
                   transaction.type === 'payout' ? 'bg-error/20' :
+                  transaction.type === 'deposit' ? 'bg-info/20' :
                   transaction.type === 'bonus' ? 'bg-warning/20' :
                   'bg-info/20'
                 }`}>
