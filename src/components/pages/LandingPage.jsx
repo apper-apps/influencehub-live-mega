@@ -1,509 +1,322 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import ApperIcon from "@/components/ApperIcon";
-import Badge from "@/components/atoms/Badge";
-import Button from "@/components/atoms/Button";
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { 
+  ArrowRight, 
+  Users, 
+  TrendingUp, 
+  DollarSign, 
+  Shield, 
+  Zap, 
+  Globe,
+  Star,
+  CheckCircle,
+  Play
+} from 'lucide-react';
+import Button from '@/components/atoms/Button';
+import Card from '@/components/atoms/Card';
 
 const LandingPage = () => {
-  const [selectedRole, setSelectedRole] = useState(null)
-  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(true);
+  const [stats, setStats] = useState({
+    affiliates: 0,
+    campaigns: 0,
+    revenue: 0,
+    conversion: 0
+  });
 
-  const handleRoleSelect = (role) => {
-    setSelectedRole(role)
-    // In a real app, this would set user context
-    setTimeout(() => {
-      navigate('/app')
-    }, 500)
-  }
+  useEffect(() => {
+    // Simulate loading and animate stats
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      animateStats();
+    }, 1000);
 
-  const storeFeatures = [
-    { icon: 'Upload', title: 'Manual Product Upload', description: 'Upload products with images, pricing, and descriptions' },
-    { icon: 'DollarSign', title: 'Flexible Commissions', description: 'Choose from per-post, per-sale, or combo payment models' },
-    { icon: 'Users', title: 'Multiple Influencers', description: 'Connect with up to 12 influencers based on your plan' },
-    { icon: 'BarChart3', title: 'Real-time Analytics', description: 'Track campaigns, conversions, and ROI in real-time' },
-    { icon: 'MessageCircle', title: 'Built-in Messaging', description: 'Communicate directly with influencers securely' },
-    { icon: 'Zap', title: 'SmartMatch AI', description: 'AI-powered matching with relevant influencers' }
-  ]
+    return () => clearTimeout(timer);
+  }, []);
 
-  const influencerFeatures = [
-    { icon: 'Target', title: 'Campaign Access', description: 'Browse and accept product promotion opportunities' },
-    { icon: 'TrendingUp', title: 'Boost Visibility', description: 'Increase your chances with Bronze, Silver, or Gold plans' },
-    { icon: 'Shield', title: 'Secure Payments', description: 'Automated commission tracking and instant payouts' },
-    { icon: 'Award', title: 'Rewards Program', description: 'Earn monthly prizes and exclusive bonuses' },
-    { icon: 'Heart', title: 'Support Program', description: 'Get essentials delivered after 10+ confirmed sales' },
-    { icon: 'Wallet', title: 'Instant Payouts', description: 'Receive payments instantly when you hit $50 balance' }
-]
+  const animateStats = () => {
+    const finalStats = {
+      affiliates: 10000,
+      campaigns: 5000,
+      revenue: 2500000,
+      conversion: 15.8
+    };
 
-  const affiliateFeatures = [
-    { icon: 'Users', title: 'Referral System', description: 'Generate unique referral codes and track signups' },
-    { icon: 'DollarSign', title: '50% Commission', description: 'Earn 50% of subscription fees from successful referrals' },
-    { icon: 'TrendingUp', title: 'Performance Tracking', description: 'Monitor referral performance and conversion rates' },
-    { icon: 'CreditCard', title: 'Instant Payouts', description: 'Receive commission payments automatically' },
-    { icon: 'Award', title: 'Bonus Rewards', description: 'Earn additional bonuses for high-performing referrals' },
-    { icon: 'BarChart3', title: 'Analytics Dashboard', description: 'Detailed insights on referral performance and earnings' }
-  ]
+    const duration = 2000;
+    const steps = 60;
+    const increment = {
+      affiliates: finalStats.affiliates / steps,
+      campaigns: finalStats.campaigns / steps,
+      revenue: finalStats.revenue / steps,
+      conversion: finalStats.conversion / steps
+    };
 
-  const plans = {
-    store: [
-      { name: 'Free', price: 0, features: ['0 influencers', 'Basic analytics', 'Email support'] },
-      { name: 'Starter', price: 15.99, features: ['2 influencers', 'Advanced analytics', 'Priority support'] },
-      { name: 'Growth', price: 59.99, features: ['5 influencers', 'AI matching', 'Campaign templates'] },
-      { name: 'Pro', price: 99, features: ['12 influencers', 'Premium analytics', 'Dedicated manager'] }
-    ],
-    influencer: [
-      { name: 'Free', price: 0, features: ['Basic listing', 'Standard visibility', 'Email support'] },
-      { name: 'Bronze', price: 4.99, features: ['15% more visibility', 'Bronze badge', 'Priority support'] },
-      { name: 'Silver', price: 15.99, features: ['30% visibility boost', 'Silver badge', 'Featured listing'] },
-      { name: 'Gold', price: 29.99, features: ['50% visibility boost', 'Gold badge', 'Top-tier exposure'] }
-    ],
-    affiliate: [
-      { name: 'Free', price: 0, features: ['Basic referral tracking', 'Standard commission rate', 'Email support'] },
-      { name: 'Partner', price: 19.99, features: ['Enhanced tracking', 'Priority referral processing', 'Dedicated support'] },
-      { name: 'Pro', price: 49.99, features: ['Advanced analytics', 'Bonus commission tiers', 'Marketing materials'] },
-      { name: 'Elite', price: 99.99, features: ['Custom referral programs', 'Personal account manager', 'Exclusive partnerships'] }
-    ]
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      currentStep++;
+      setStats({
+        affiliates: Math.floor(increment.affiliates * currentStep),
+        campaigns: Math.floor(increment.campaigns * currentStep),
+        revenue: Math.floor(increment.revenue * currentStep),
+        conversion: +(increment.conversion * currentStep).toFixed(1)
+      });
+
+      if (currentStep >= steps) {
+        clearInterval(interval);
+        setStats(finalStats);
+      }
+    }, duration / steps);
+  };
+
+  const features = [
+    {
+      icon: Users,
+      title: "Affiliate Network",
+      description: "Connect with thousands of verified affiliates ready to promote your products."
+    },
+    {
+      icon: TrendingUp,
+      title: "Real-time Analytics",
+      description: "Track performance with detailed insights and comprehensive reporting tools."
+    },
+    {
+      icon: DollarSign,
+      title: "Flexible Commission",
+      description: "Set custom commission rates and payment structures that work for your business."
+    },
+    {
+      icon: Shield,
+      title: "Fraud Protection",
+      description: "Advanced security measures to protect against fraudulent activities."
+    },
+    {
+      icon: Zap,
+      title: "Instant Payouts",
+      description: "Fast and reliable payment processing with multiple payout options."
+    },
+    {
+      icon: Globe,
+      title: "Global Reach",
+      description: "Expand your reach with affiliates from around the world."
+    }
+  ];
+
+  const testimonials = [
+    {
+      name: "Sarah Johnson",
+      role: "Marketing Director",
+      company: "TechCorp",
+      content: "Phoenix Hub transformed our affiliate program. We've seen a 300% increase in conversions.",
+      rating: 5
+    },
+    {
+      name: "Michael Chen",
+      role: "E-commerce Manager",
+      company: "StyleBrand",
+      content: "The analytics and reporting features are incredible. We can optimize our campaigns in real-time.",
+      rating: 5
+    },
+    {
+      name: "Emily Rodriguez",
+      role: "Growth Lead",
+      company: "StartupX",
+      content: "Easy to use platform with excellent customer support. Highly recommended!",
+      rating: 5
+    }
+  ];
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background via-surface to-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading Phoenix Hub...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-surface to-background">
       {/* Hero Section */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="relative overflow-hidden"
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20"></div>
-        <div className="relative container mx-auto px-6 py-20">
-          <div className="text-center max-w-4xl mx-auto">
-            {/* Logo */}
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="flex items-center justify-center gap-3 mb-8"
-            >
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center">
-                <ApperIcon name="Zap" size={24} className="text-white" />
-              </div>
-              <h1 className="text-4xl font-bold text-white font-display">
-                InfluenceHub
-              </h1>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="space-y-6"
-            >
-              <h2 className="text-5xl font-bold text-white font-display leading-tight">
-                Connect Store Owners with
-                <span className="gradient-text"> Influencers</span>
-              </h2>
-              <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                The ultimate marketplace for product promotions. Store owners find the perfect influencers, 
-                while creators discover exciting collaboration opportunities.
-              </p>
-            </motion.div>
-
-            {/* Role Selection */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="mt-12 space-y-4"
-            >
-              <p className="text-lg text-gray-300 mb-8">Choose your role to get started:</p>
-              
-<div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                {/* Store Owner Card */}
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => handleRoleSelect('store')}
-                  className={`
-                    relative p-8 rounded-xl border-2 cursor-pointer transition-all duration-300
-                    ${selectedRole === 'store' 
-                      ? 'border-primary bg-primary/10' 
-                      : 'border-gray-600 hover:border-primary/50 bg-surface'
-                    }
-                  `}
-                >
-                  <div className="text-center space-y-4">
-                    <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mx-auto">
-                      <ApperIcon name="Store" size={32} className="text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-white font-display">Store Owner</h3>
-                    <p className="text-gray-300">
-                      Upload products and connect with influencers to promote your brand
-                    </p>
-                    <div className="flex justify-center gap-2">
-                      <Badge variant="primary" size="small">Commission Control</Badge>
-                      <Badge variant="success" size="small">AI Matching</Badge>
-                    </div>
-                  </div>
-                  {selectedRole === 'store' && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="absolute top-4 right-4 w-6 h-6 bg-success rounded-full flex items-center justify-center"
-                    >
-                      <ApperIcon name="Check" size={14} className="text-white" />
-                    </motion.div>
-                  )}
-                </motion.div>
-
-                {/* Influencer Card */}
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => handleRoleSelect('influencer')}
-                  className={`
-                    relative p-8 rounded-xl border-2 cursor-pointer transition-all duration-300
-                    ${selectedRole === 'influencer' 
-                      ? 'border-primary bg-primary/10' 
-                      : 'border-gray-600 hover:border-primary/50 bg-surface'
-                    }
-                  `}
-                >
-                  <div className="text-center space-y-4">
-                    <div className="w-16 h-16 bg-gradient-to-br from-secondary to-primary rounded-lg flex items-center justify-center mx-auto">
-                      <ApperIcon name="Users" size={32} className="text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-white font-display">Influencer</h3>
-                    <p className="text-gray-300">
-                      Discover products to promote and earn commissions from your content
-                    </p>
-                    <div className="flex justify-center gap-2">
-                      <Badge variant="warning" size="small">Instant Payouts</Badge>
-                      <Badge variant="info" size="small">Boost Plans</Badge>
-                    </div>
-                  </div>
-                  {selectedRole === 'influencer' && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="absolute top-4 right-4 w-6 h-6 bg-success rounded-full flex items-center justify-center"
-                    >
-                      <ApperIcon name="Check" size={14} className="text-white" />
-                    </motion.div>
-                  )}
-                </motion.div>
-
-                {/* Affiliate Marketer Card */}
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => handleRoleSelect('affiliate')}
-                  className={`
-                    relative p-8 rounded-xl border-2 cursor-pointer transition-all duration-300
-                    ${selectedRole === 'affiliate' 
-                      ? 'border-primary bg-primary/10' 
-                      : 'border-gray-600 hover:border-primary/50 bg-surface'
-                    }
-                  `}
-                >
-                  <div className="text-center space-y-4">
-                    <div className="w-16 h-16 bg-gradient-to-br from-accent to-warning rounded-lg flex items-center justify-center mx-auto">
-                      <ApperIcon name="Share2" size={32} className="text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-white font-display">Affiliate Marketer</h3>
-                    <p className="text-gray-300">
-                      Promote InfluenceHub and earn 50% commission on successful referrals
-                    </p>
-                    <div className="flex justify-center gap-2">
-                      <Badge variant="warning" size="small">50% Commission</Badge>
-                      <Badge variant="success" size="small">Instant Payouts</Badge>
-                    </div>
-                  </div>
-                  {selectedRole === 'affiliate' && (
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="absolute top-4 right-4 w-6 h-6 bg-success rounded-full flex items-center justify-center"
-                    >
-                      <ApperIcon name="Check" size={14} className="text-white" />
-                    </motion.div>
-                  )}
-                </motion.div>
-              </div>
-
-              {selectedRole && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-8"
-                >
-                  <Button
-                    variant="primary"
-                    size="large"
-                    onClick={() => handleRoleSelect(selectedRole)}
-                    className="px-12 py-4 text-lg"
-                  >
-Continue as {selectedRole === 'store' ? 'Store Owner' : selectedRole === 'influencer' ? 'Influencer' : 'Affiliate Marketer'}
-                  </Button>
-                </motion.div>
-              )}
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Features Section */}
-      <section className="py-20 bg-surface/50">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white font-display mb-6">
-              Powerful Features for Both Sides
-            </h2>
-            <p className="text-xl text-gray-300">
-              Everything you need to succeed in influencer marketing
+      <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 opacity-50"></div>
+        <div className="relative max-w-7xl mx-auto text-center">
+          <div className="mb-8">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-6">
+              Welcome to{' '}
+              <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                Phoenix Hub
+              </span>
+            </h1>
+            <p className="text-xl sm:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+              The ultimate affiliate marketing platform that connects brands with top-performing affiliates worldwide
             </p>
           </div>
-<div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Store Owner Features */}
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-2">
-                <ApperIcon name="Store" size={24} className="text-primary" />
-                For Store Owners
-              </h3>
-              <div className="space-y-6">
-                {storeFeatures.map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="flex items-start gap-4"
-                  >
-                    <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <ApperIcon name={feature.icon} size={20} className="text-primary" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-2">{feature.title}</h4>
-                      <p className="text-gray-300">{feature.description}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
 
-            {/* Influencer Features */}
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-2">
-                <ApperIcon name="Users" size={24} className="text-secondary" />
-                For Influencers
-              </h3>
-              <div className="space-y-6">
-                {influencerFeatures.map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="flex items-start gap-4"
-                  >
-                    <div className="w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <ApperIcon name={feature.icon} size={20} className="text-secondary" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-2">{feature.title}</h4>
-                      <p className="text-gray-300">{feature.description}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <Button
+              variant="primary"
+              size="lg"
+              className="flex items-center gap-2 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300"
+            >
+              Get Started
+              <ArrowRight className="w-5 h-5" />
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="flex items-center gap-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300"
+            >
+              <Play className="w-5 h-5" />
+              Watch Demo
+            </Button>
+          </div>
 
-            {/* Affiliate Marketer Features */}
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-2">
-                <ApperIcon name="Share2" size={24} className="text-accent" />
-                For Affiliate Marketers
-              </h3>
-              <div className="space-y-6">
-                {affiliateFeatures.map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="flex items-start gap-4"
-                  >
-                    <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <ApperIcon name={feature.icon} size={20} className="text-accent" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-white mb-2">{feature.title}</h4>
-                      <p className="text-gray-300">{feature.description}</p>
-                    </div>
-                  </motion.div>
-                ))}
+          {/* Stats Section */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div className="text-center">
+              <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
+                {stats.affiliates?.toLocaleString() || '0'}+
               </div>
+              <div className="text-gray-400">Active Affiliates</div>
             </div>
-</div>
+            <div className="text-center">
+              <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
+                {stats.campaigns?.toLocaleString() || '0'}+
+              </div>
+              <div className="text-gray-400">Campaigns</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
+                ${stats.revenue?.toLocaleString() || '0'}+
+              </div>
+              <div className="text-gray-400">Revenue Generated</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
+                {stats.conversion || '0'}%
+              </div>
+              <div className="text-gray-400">Avg. Conversion</div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
+      {/* Features Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white font-display mb-6">
-              Choose Your Plan
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              Why Choose Phoenix Hub?
             </h2>
-            <p className="text-xl text-gray-300">
-              Flexible pricing for every business size and influencer level
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Powerful features designed to maximize your affiliate marketing success
             </p>
           </div>
-          
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Store Owner Plans */}
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-8 text-center">Store Owner Plans</h3>
-              <div className="grid grid-cols-1 gap-6">
-                {plans.store.map((plan, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-surface border border-gray-600 rounded-lg p-6 hover:border-primary/50 transition-colors"
-                  >
-                    <div className="text-center mb-6">
-                      <h4 className="text-xl font-bold text-white mb-2">{plan.name}</h4>
-                      <div className="text-3xl font-bold text-white">
-                        ${plan.price}
-                        <span className="text-sm text-gray-400 font-normal">/month</span>
-                      </div>
-                    </div>
-                    <ul className="space-y-3 mb-6">
-                      {plan.features.map((feature, i) => (
-                        <li key={i} className="flex items-center gap-2 text-gray-300">
-                          <ApperIcon name="Check" size={16} className="text-success" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    <Button 
-                      variant={plan.name === 'Pro' ? 'primary' : 'secondary'} 
-                      className="w-full"
-                    >
-                      Choose Plan
-                    </Button>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
 
-            {/* Influencer Plans */}
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-8 text-center">Influencer Plans</h3>
-              <div className="grid grid-cols-1 gap-6">
-                {plans.influencer.map((plan, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-surface border border-gray-600 rounded-lg p-6 hover:border-primary/50 transition-colors"
-                  >
-                    <div className="text-center mb-6">
-                      <h4 className="text-xl font-bold text-white mb-2">{plan.name}</h4>
-                      <div className="text-3xl font-bold text-white">
-                        ${plan.price}
-                        <span className="text-sm text-gray-400 font-normal">/month</span>
-                      </div>
-                    </div>
-                    <ul className="space-y-3 mb-6">
-                      {plan.features.map((feature, i) => (
-                        <li key={i} className="flex items-center gap-2 text-gray-300">
-                          <ApperIcon name="Check" size={16} className="text-success" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    <Button 
-                      variant={plan.name === 'Gold' ? 'primary' : 'secondary'} 
-                      className="w-full"
-                    >
-                      Choose Plan
-                    </Button>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <Card key={index} className="p-6 bg-gradient-to-br from-surface to-surface/80 border-primary/20 hover:border-primary/40 transition-all duration-300 group">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 bg-gradient-to-r from-primary to-secondary rounded-lg group-hover:scale-110 transition-transform duration-300">
+                    <feature.icon className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>
+                    <p className="text-gray-300">{feature.description}</p>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            {/* Affiliate Plans */}
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-8 text-center">Affiliate Plans</h3>
-              <div className="grid grid-cols-1 gap-6">
-                {plans.affiliate.map((plan, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-surface border border-gray-600 rounded-lg p-6 hover:border-primary/50 transition-colors"
-                  >
-                    <div className="text-center mb-6">
-                      <h4 className="text-xl font-bold text-white mb-2">{plan.name}</h4>
-                      <div className="text-3xl font-bold text-white">
-                        ${plan.price}
-                        <span className="text-sm text-gray-400 font-normal">/month</span>
-                      </div>
-                    </div>
-                    <ul className="space-y-3 mb-6">
-                      {plan.features.map((feature, i) => (
-                        <li key={i} className="flex items-center gap-2 text-gray-300">
-                          <ApperIcon name="Check" size={16} className="text-success" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                    <Button 
-                      variant={plan.name === 'Elite' ? 'primary' : 'secondary'} 
-                      className="w-full"
-                    >
-                      Choose Plan
-                    </Button>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
+      {/* Testimonials Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-surface/50 to-background/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              What Our Users Say
+            </h2>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Don't just take our word for it - hear from our satisfied customers
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="p-6 bg-gradient-to-br from-surface to-surface/80 border-primary/20">
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <p className="text-gray-300 mb-4">"{testimonial.content}"</p>
+                <div className="border-t border-gray-600 pt-4">
+                  <p className="text-white font-semibold">{testimonial.name}</p>
+                  <p className="text-gray-400 text-sm">{testimonial.role}, {testimonial.company}</p>
+                </div>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary to-secondary">
-        <div className="container mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-3xl mx-auto"
-          >
-            <h2 className="text-4xl font-bold text-white font-display mb-6">
-              Ready to Start Your Influencer Journey?
-            </h2>
-            <p className="text-xl text-white/90 mb-8">
-              Join thousands of store owners and influencers already collaborating on InfluenceHub
-            </p>
-            <Button
-              variant="secondary"
-              size="large"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="px-12 py-4 text-lg bg-white text-primary hover:bg-white/90"
-            >
-              Get Started Now
-            </Button>
-          </motion.div>
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+            Ready to Scale Your Business?
+          </h2>
+          <p className="text-xl text-gray-300 mb-8">
+            Join thousands of successful brands and affiliates on Phoenix Hub
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link to="/register">
+              <Button
+                variant="primary"
+                size="lg"
+                className="flex items-center gap-2 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300"
+              >
+                Start Free Trial
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </Link>
+            <Link to="/contact">
+              <Button
+                variant="outline"
+                size="lg"
+                className="border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300"
+              >
+                Contact Sales
+              </Button>
+            </Link>
+          </div>
+
+          <div className="mt-8 flex items-center justify-center gap-4 text-gray-400">
+            <CheckCircle className="w-5 h-5 text-green-400" />
+            <span>Free 14-day trial</span>
+            <CheckCircle className="w-5 h-5 text-green-400" />
+            <span>No credit card required</span>
+            <CheckCircle className="w-5 h-5 text-green-400" />
+            <span>Cancel anytime</span>
+          </div>
         </div>
       </section>
-    </div>
-  )
-}
 
-export default LandingPage
+      {/* Footer */}
+      <footer className="border-t border-gray-800 py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-gray-400">
+            © 2024 Phoenix Hub. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default LandingPage;
