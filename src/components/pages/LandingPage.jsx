@@ -68,59 +68,59 @@ const LandingPage = () => {
     }, duration / steps);
   };
 
-  const features = [
+const features = [
     {
       icon: Users,
-      title: "Affiliate Network",
-      description: "Connect with thousands of verified affiliates ready to promote your products."
+      title: "Web-Based Network",
+      description: "Connect with thousands of verified affiliates through our secure web platform."
     },
     {
       icon: TrendingUp,
-      title: "Real-time Analytics",
-      description: "Track performance with detailed insights and comprehensive reporting tools."
+      title: "Browser Analytics",
+      description: "Access real-time performance insights and comprehensive reporting through your web browser."
     },
     {
       icon: DollarSign,
-      title: "Flexible Commission",
-      description: "Set custom commission rates and payment structures that work for your business."
+      title: "Flexible Web Payments",
+      description: "Manage custom commission rates and payment structures through our web interface."
     },
     {
       icon: Shield,
-      title: "Fraud Protection",
-      description: "Advanced security measures to protect against fraudulent activities."
+      title: "Web Security",
+      description: "Enterprise-grade security measures protecting your data and transactions online."
     },
     {
       icon: Zap,
-      title: "Instant Payouts",
-      description: "Fast and reliable payment processing with multiple payout options."
+      title: "Instant Web Processing",
+      description: "Fast and reliable payment processing accessible from any web browser."
     },
     {
       icon: Globe,
-      title: "Global Reach",
-      description: "Expand your reach with affiliates from around the world."
+      title: "Cross-Platform Access",
+      description: "Access your affiliate network from any device with a modern web browser."
     }
   ];
 
-  const testimonials = [
+const testimonials = [
     {
       name: "Sarah Johnson",
       role: "Marketing Director",
       company: "TechCorp",
-      content: "Phoenix Hub transformed our affiliate program. We've seen a 300% increase in conversions.",
+      content: "Phoenix Hub's web platform transformed our affiliate program. The browser-based interface makes management effortless.",
       rating: 5
     },
     {
       name: "Michael Chen",
       role: "E-commerce Manager",
       company: "StyleBrand",
-      content: "The analytics and reporting features are incredible. We can optimize our campaigns in real-time.",
+      content: "The web-based analytics and reporting features are incredible. We can access everything from any device.",
       rating: 5
     },
     {
       name: "Emily Rodriguez",
       role: "Growth Lead",
       company: "StartupX",
-      content: "Easy to use platform with excellent customer support. Highly recommended!",
+      content: "No downloads needed, works perfectly in our browsers. The web platform is intuitive and powerful!",
       rating: 5
     }
   ];
@@ -136,7 +136,7 @@ const LandingPage = () => {
     );
   }
 
-  return (
+return (
     <div className="min-h-screen bg-gradient-to-br from-background via-surface to-background">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
@@ -150,26 +150,31 @@ const LandingPage = () => {
               </span>
             </h1>
             <p className="text-xl sm:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-              The ultimate affiliate marketing platform that connects brands with top-performing affiliates worldwide
+              The web-based affiliate marketing platform that connects brands with top-performing affiliates worldwide
             </p>
+            <div className="text-sm text-gray-400 mb-4">
+              Access Phoenix Hub directly through your web browser • No downloads required
+            </div>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button
-              variant="primary"
-              size="lg"
-              className="flex items-center gap-2 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300"
-            >
-              Get Started
-              <ArrowRight className="w-5 h-5" />
-            </Button>
+            <Link to="/app">
+              <Button
+                variant="primary"
+                size="lg"
+                className="flex items-center gap-2 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300"
+              >
+                Launch Web App
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </Link>
             <Button
               variant="outline"
               size="lg"
               className="flex items-center gap-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300"
             >
               <Play className="w-5 h-5" />
-              Watch Demo
+              View Demo
             </Button>
           </div>
 
@@ -179,13 +184,13 @@ const LandingPage = () => {
               <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
                 {stats.affiliates?.toLocaleString() || '0'}+
               </div>
-              <div className="text-gray-400">Active Affiliates</div>
+              <div className="text-gray-400">Active Users</div>
             </div>
             <div className="text-center">
               <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
                 {stats.campaigns?.toLocaleString() || '0'}+
               </div>
-              <div className="text-gray-400">Campaigns</div>
+              <div className="text-gray-400">Web Campaigns</div>
             </div>
             <div className="text-center">
               <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
@@ -203,6 +208,20 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* Platform Notice */}
+      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-primary/10 border-y border-primary/20">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <Globe className="w-6 h-6 text-primary" />
+            <h3 className="text-xl font-semibold text-white">Web-Based Platform</h3>
+          </div>
+          <p className="text-gray-300 max-w-2xl mx-auto">
+            Phoenix Hub is a responsive web application accessible through any modern web browser. 
+            Works seamlessly on desktop, tablet, and mobile devices without requiring any downloads or installations.
+          </p>
+        </div>
+      </section>
+
       {/* Features Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
@@ -211,7 +230,7 @@ const LandingPage = () => {
               Why Choose Phoenix Hub?
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Powerful features designed to maximize your affiliate marketing success
+              Powerful web-based features designed to maximize your affiliate marketing success
             </p>
           </div>
 
@@ -241,7 +260,7 @@ const LandingPage = () => {
               What Our Users Say
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Don't just take our word for it - hear from our satisfied customers
+              Hear from businesses using our web platform to grow their affiliate programs
             </p>
           </div>
 
@@ -271,48 +290,101 @@ const LandingPage = () => {
             Ready to Scale Your Business?
           </h2>
           <p className="text-xl text-gray-300 mb-8">
-            Join thousands of successful brands and affiliates on Phoenix Hub
+            Join thousands of successful brands and affiliates using our web platform
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/register">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <Link to="/app">
               <Button
                 variant="primary"
                 size="lg"
                 className="flex items-center gap-2 bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 transition-all duration-300"
               >
-                Start Free Trial
+                Access Web Platform
                 <ArrowRight className="w-5 h-5" />
               </Button>
             </Link>
-            <Link to="/contact">
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300"
-              >
-                Contact Sales
-              </Button>
-            </Link>
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300"
+            >
+              Learn More
+            </Button>
           </div>
 
-          <div className="mt-8 flex items-center justify-center gap-4 text-gray-400">
+          <div className="flex items-center justify-center gap-4 text-gray-400 mb-8">
             <CheckCircle className="w-5 h-5 text-green-400" />
-            <span>Free 14-day trial</span>
+            <span>Instant browser access</span>
             <CheckCircle className="w-5 h-5 text-green-400" />
-            <span>No credit card required</span>
+            <span>No downloads required</span>
             <CheckCircle className="w-5 h-5 text-green-400" />
-            <span>Cancel anytime</span>
+            <span>Works on all devices</span>
+          </div>
+
+          {/* Platform Disclaimer */}
+          <div className="bg-surface/50 rounded-lg border border-gray-600 p-6 max-w-2xl mx-auto">
+            <div className="flex items-start gap-3">
+              <Shield className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+              <div className="text-left">
+                <h4 className="text-white font-medium mb-2">Platform Information</h4>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  Phoenix Hub is a web-based application accessible through modern web browsers. 
+                  We are not affiliated with any mobile app stores. All features and services are 
+                  provided through our secure web platform. Compatible with Chrome, Firefox, Safari, 
+                  and Edge browsers on desktop and mobile devices.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-800 py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <p className="text-gray-400">
-            © 2024 Phoenix Hub. All rights reserved.
-          </p>
+      <footer className="border-t border-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-white mb-2">Phoenix Hub</h3>
+            <p className="text-gray-400 mb-4">Professional Web-Based Affiliate Marketing Platform</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div className="text-center">
+              <h4 className="text-white font-medium mb-3">Platform</h4>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li>Web Application</li>
+                <li>Browser Compatible</li>
+                <li>Responsive Design</li>
+                <li>Cloud-Based</li>
+              </ul>
+            </div>
+            
+            <div className="text-center">
+              <h4 className="text-white font-medium mb-3">Features</h4>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li>Campaign Management</li>
+                <li>Real-time Analytics</li>
+                <li>Secure Payments</li>
+                <li>Global Network</li>
+              </ul>
+            </div>
+            
+            <div className="text-center">
+              <h4 className="text-white font-medium mb-3">Support</h4>
+              <ul className="space-y-2 text-gray-400 text-sm">
+                <li>24/7 Web Support</li>
+                <li>Documentation</li>
+                <li>API Reference</li>
+                <li>Community Forum</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-700 pt-8 text-center">
+            <p className="text-gray-400 text-sm">
+              © 2024 Phoenix Hub. All rights reserved. This is a web-based platform accessible through browsers.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
