@@ -1,20 +1,11 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { 
-  ArrowRight, 
-  Users, 
-  TrendingUp, 
-  DollarSign, 
-  Shield, 
-  Zap, 
-  Globe,
-  Star,
-  CheckCircle,
-  Play
-} from 'lucide-react';
-import Button from '@/components/atoms/Button';
-import Card from '@/components/atoms/Card';
-
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight, CheckCircle, DollarSign, Globe, Play, Shield, Star, TrendingUp, Users, Zap } from "lucide-react";
+import App from "@/App";
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
+import Loading from "@/components/ui/Loading";
+import Analytics from "@/components/pages/Analytics";
 const LandingPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState({
@@ -34,14 +25,13 @@ const LandingPage = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const animateStats = () => {
+const animateStats = () => {
     const finalStats = {
-      affiliates: 10000,
-      campaigns: 5000,
-      revenue: 2500000,
-      conversion: 15.8
+      affiliates: 1000,
+      campaigns: 500,
+      revenue: 250000,
+      conversion: 95
     };
-
     const duration = 2000;
     const steps = 60;
     const increment = {
@@ -67,37 +57,36 @@ const LandingPage = () => {
       }
     }, duration / steps);
   };
-
 const features = [
     {
       icon: Users,
-      title: "Web-Based Network",
-      description: "Connect with thousands of verified affiliates through our secure web platform."
+      title: "App-Based Network",
+      description: "Connect with thousands of verified affiliates through our secure platform."
     },
     {
       icon: TrendingUp,
-      title: "Browser Analytics",
-      description: "Access real-time performance insights and comprehensive reporting through your web browser."
+      title: "Real-Time Analytics",
+      description: "Access real-time performance insights and comprehensive reporting through the platform."
     },
     {
       icon: DollarSign,
-      title: "Flexible Web Payments",
-      description: "Manage custom commission rates and payment structures through our web interface."
+      title: "Flexible Payments",
+      description: "Manage custom commission rates and payment structures through our interface."
     },
     {
       icon: Shield,
-      title: "Web Security",
-      description: "Enterprise-grade security measures protecting your data and transactions online."
+      title: "Enterprise Security",
+      description: "Enterprise-grade security measures protecting your data and transactions."
     },
     {
       icon: Zap,
-      title: "Instant Web Processing",
-      description: "Fast and reliable payment processing accessible from any web browser."
+      title: "Instant Processing",
+      description: "Fast and reliable payment processing accessible from any device."
     },
     {
       icon: Globe,
-      title: "Cross-Platform Access",
-      description: "Access your affiliate network from any device with a modern web browser."
+      title: "Universal Access",
+      description: "Access your affiliate network from any device with a modern browser."
     }
   ];
 
@@ -106,21 +95,21 @@ const testimonials = [
       name: "Sarah Johnson",
       role: "Marketing Director",
       company: "TechCorp",
-      content: "Phoenix Hub's web platform transformed our affiliate program. The browser-based interface makes management effortless.",
+      content: "Phoenix Hub's platform transformed our affiliate program. The browser-based interface makes management effortless.",
       rating: 5
     },
     {
       name: "Michael Chen",
       role: "E-commerce Manager",
       company: "StyleBrand",
-      content: "The web-based analytics and reporting features are incredible. We can access everything from any device.",
+      content: "The analytics and reporting features are incredible. We can access everything from any device.",
       rating: 5
     },
     {
       name: "Emily Rodriguez",
       role: "Growth Lead",
       company: "StartupX",
-      content: "No downloads needed, works perfectly in our browsers. The web platform is intuitive and powerful!",
+      content: "No downloads needed, works perfectly in our browsers. The platform is intuitive and powerful!",
       rating: 5
     }
   ];
@@ -143,17 +132,17 @@ return (
         <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 opacity-50"></div>
         <div className="relative max-w-7xl mx-auto text-center">
           <div className="mb-8">
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-6">
+<h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-6">
               Welcome to{' '}
               <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                Phoenix Hub
-</span>
+                Yphoeniex Influencer Hub
+              </span>
             </h1>
             <p className="text-xl sm:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-              The automated platform for Brands, Stores, and Influencers to streamline partnerships and maximize growth
+              The comprehensive platform for Brands, Stores, and Influencers to streamline partnerships and maximize growth
             </p>
-            <div className="text-sm text-gray-400 mb-4">
-              Access Phoenix Hub directly through your web browser • No downloads required
+<div className="text-sm text-gray-400 mb-4">
+              Access Yphoeniex Influencer Hub directly through your web browser • No downloads required
             </div>
           </div>
 
@@ -179,44 +168,44 @@ return (
           </div>
 
           {/* Stats Section */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+<div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
             <div className="text-center">
               <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
-                {stats.affiliates?.toLocaleString() || '0'}+
+                1000+
               </div>
               <div className="text-gray-400">Active Users</div>
             </div>
             <div className="text-center">
               <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
-                {stats.campaigns?.toLocaleString() || '0'}+
+                500+
               </div>
-              <div className="text-gray-400">Web Campaigns</div>
+              <div className="text-gray-400">Platform Campaigns</div>
             </div>
             <div className="text-center">
               <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
-                ${stats.revenue?.toLocaleString() || '0'}+
+                $250K+
               </div>
-              <div className="text-gray-400">Revenue Generated</div>
+              <div className="text-gray-400">Platform Revenue</div>
             </div>
             <div className="text-center">
               <div className="text-3xl sm:text-4xl font-bold text-white mb-2">
-                {stats.conversion || '0'}%
+                95%
               </div>
-              <div className="text-gray-400">Avg. Conversion</div>
+              <div className="text-gray-400">User Satisfaction</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Platform Notice */}
-      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-primary/10 border-y border-primary/20">
+<section className="py-8 px-4 sm:px-6 lg:px-8 bg-primary/10 border-y border-primary/20">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Globe className="w-6 h-6 text-primary" />
-            <h3 className="text-xl font-semibold text-white">Web-Based Platform</h3>
+<h3 className="text-xl font-semibold text-white">Browser-Based Platform</h3>
           </div>
           <p className="text-gray-300 max-w-2xl mx-auto">
-            Phoenix Hub is a responsive web application accessible through any modern web browser. 
+            Yphoeniex Influencer Hub is a responsive application accessible through any modern browser. 
             Works seamlessly on desktop, tablet, and mobile devices without requiring any downloads or installations.
           </p>
         </div>
@@ -226,11 +215,11 @@ return (
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-Why Choose Phoenix Hub?
+<h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              Why Choose Yphoeniex Influencer Hub?
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Powerful automated features designed to streamline connections between Brands, Stores, and Influencers
+              Powerful features designed to streamline connections between Brands, Stores, and Influencers
             </p>
           </div>
 
@@ -286,8 +275,8 @@ Why Choose Phoenix Hub?
       {/* CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-Ready to Scale Your Business?
+<h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+            Ready to Scale Your Business?
           </h2>
           <p className="text-xl text-gray-300 mb-8">
             Join thousands of successful Brands, Stores, and Influencers using our automated platform
@@ -324,15 +313,14 @@ Ready to Scale Your Business?
 
           {/* Platform Disclaimer */}
           <div className="bg-surface/50 rounded-lg border border-gray-600 p-6 max-w-2xl mx-auto">
-            <div className="flex items-start gap-3">
+<div className="flex items-start gap-3">
               <Shield className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
               <div className="text-left">
                 <h4 className="text-white font-medium mb-2">Platform Information</h4>
                 <p className="text-gray-400 text-sm leading-relaxed">
-                  Phoenix Hub is a web-based application accessible through modern web browsers. 
-                  We are not affiliated with any mobile app stores. All features and services are 
-                  provided through our secure web platform. Compatible with Chrome, Firefox, Safari, 
-                  and Edge browsers on desktop and mobile devices.
+                  Yphoeniex Influencer Hub is a browser-based application accessible through modern browsers. 
+                  All features and services are provided through our secure web platform. 
+                  Compatible with Chrome, Firefox, Safari, and Edge browsers on desktop and mobile devices.
                 </p>
               </div>
             </div>
@@ -341,13 +329,13 @@ Ready to Scale Your Business?
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-800 py-12 px-4 sm:px-6 lg:px-8">
+<footer className="border-t border-gray-800 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-<h3 className="text-2xl font-bold text-white mb-2">Phoenix Hub</h3>
-            <p className="text-gray-400 mb-4">Automated Platform for Brands, Stores, and Influencers</p>
+          <div className="text-center mb-8">
+<h3 className="text-2xl font-bold text-white mb-2">Yphoeniex Influencer Hub</h3>
+            <p className="text-gray-400 mb-4">Comprehensive Platform for Brands, Stores, and Influencers</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div className="text-center">
               <h4 className="text-white font-medium mb-3">Platform</h4>
@@ -382,7 +370,7 @@ Ready to Scale Your Business?
           
           <div className="border-t border-gray-700 pt-8 text-center">
             <p className="text-gray-400 text-sm">
-              © 2024 Phoenix Hub. All rights reserved. This is a web-based platform accessible through browsers.
+© 2024 Yphoeniex Influencer Hub. All rights reserved. This is a web-based platform accessible through browsers.
             </p>
           </div>
         </div>

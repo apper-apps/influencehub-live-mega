@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import StatCard from '@/components/molecules/StatCard'
-import Loading from '@/components/ui/Loading'
-import Error from '@/components/ui/Error'
-import ApperIcon from '@/components/ApperIcon'
-import Button from '@/components/atoms/Button'
-import Badge from '@/components/atoms/Badge'
-import { analyticsService } from '@/services/api/analyticsService'
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import ApperIcon from "@/components/ApperIcon";
+import Badge from "@/components/atoms/Badge";
+import Button from "@/components/atoms/Button";
+import Error from "@/components/ui/Error";
+import Loading from "@/components/ui/Loading";
+import StatCard from "@/components/molecules/StatCard";
+import { analyticsService } from "@/services/api/analyticsService";
 
 const Analytics = () => {
   const [analytics, setAnalytics] = useState(null)
@@ -42,7 +42,7 @@ const Analytics = () => {
   if (loading) return <Loading type="dashboard" />
   if (error) return <Error message={error} onRetry={loadAnalytics} />
 
-  const stats = {
+const stats = {
     store: [
       { 
         title: 'Total Revenue', 
@@ -105,9 +105,9 @@ const Analytics = () => {
       { 
         title: 'Success Rate', 
         value: `${analytics?.successRate || '0'}%`, 
-        icon: 'Award', 
+        icon: 'TrendingUp', 
         trend: 'up', 
-        trendValue: '+5%', 
+        trendValue: '+2%', 
         color: 'warning' 
       }
     ]
@@ -120,14 +120,13 @@ const Analytics = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-      >
+>
         <div>
           <h1 className="text-3xl font-bold text-white font-display">Analytics</h1>
           <p className="text-gray-400 mt-2">
-            Track your performance and optimize your campaigns
+            Track your performance and optimize your campaigns through Yphoeniex Influencer Hub
           </p>
         </div>
-        
         <div className="flex items-center gap-3">
           <select
             value={timeRange}
@@ -242,13 +241,13 @@ const Analytics = () => {
                 <div key={i} className="flex items-center gap-3 p-3 bg-gray-800 rounded-lg">
                   <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
                     <span className="text-primary font-semibold text-sm">{i}</span>
-                  </div>
+</div>
                   <div className="flex-1">
                     <p className="text-white font-medium">
                       {userType === 'store' ? `Product ${i}` : `Campaign ${i}`}
                     </p>
                     <p className="text-gray-400 text-sm">
-                      {userType === 'store' ? '$1,250 revenue' : '$320 earned'}
+                      {userType === 'store' ? 'View performance' : 'View details'}
                     </p>
                   </div>
                 </div>
