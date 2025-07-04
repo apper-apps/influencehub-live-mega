@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect, useState } from "react";
-import { Route, Router, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Layout from "@/components/organisms/Layout";
 import Error from "@/components/ui/Error";
@@ -53,9 +53,10 @@ class ErrorBoundary extends React.Component {
               onClick={() => window.location.reload()}
               className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-colors"
             >
+>
               Refresh Page
             </button>
-            {process.env.NODE_ENV === 'development' && (
+            {(typeof process !== 'undefined' && process.env?.NODE_ENV === 'development') && (
               <details className="mt-4 text-left">
                 <summary className="cursor-pointer text-sm text-gray-500">Error Details</summary>
                 <pre className="mt-2 text-xs text-red-400 overflow-auto">
@@ -65,15 +66,13 @@ class ErrorBoundary extends React.Component {
                 </pre>
               </details>
             )}
-          </div>
         </div>
       )
     }
 
     return this.props.children
-  }
 }
-const App = React.memo(() => {
+}
 const App = React.memo(() => {
   useEffect(() => {
     // Set document title for consistent branding
@@ -101,7 +100,7 @@ const App = React.memo(() => {
 
 return (
     <ErrorBoundary>
-      <Router>
+      <BrowserRouter>
         <div className="min-h-screen bg-background text-white mobile-app-container">
           <ErrorBoundary>
             <Suspense fallback={<Loading type="dashboard" />}>
@@ -137,8 +136,8 @@ return (
             limit={5}
             className="mobile-toast-container"
           />
-        </div>
-      </Router>
+</div>
+      </BrowserRouter>
     </ErrorBoundary>
   )
 })
