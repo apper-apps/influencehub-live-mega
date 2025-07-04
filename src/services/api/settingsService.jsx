@@ -30,11 +30,10 @@ class SettingsService {
   async uploadProfileImage(file) {
     await this.delay(1000)
     // Simulate file upload
-    const imageUrl = URL.createObjectURL(file)
+const imageUrl = URL.createObjectURL(file)
     this.settings.profileImage = imageUrl
-return imageUrl
+    return imageUrl
   }
-
   async updateSubscriptionTier(newTier) {
     await this.delay(500)
     // Validate tier
@@ -116,6 +115,7 @@ return imageUrl
 
   delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms))
-  }
+}
+}
 
 export const settingsService = new SettingsService()
