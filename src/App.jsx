@@ -1,5 +1,5 @@
-import React, { Suspense, lazy } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import React, { Suspense, lazy, useEffect } from 'react'
+import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import Layout from '@/components/organisms/Layout'
 import Loading from '@/components/ui/Loading'
@@ -18,9 +18,30 @@ const AffiliateReferrals = lazy(() => import('@/components/pages/AffiliateReferr
 const AffiliateCommissions = lazy(() => import('@/components/pages/AffiliateCommissions'))
 
 const App = React.memo(() => {
-return (
+  useEffect(() => {
+    // Register service worker for PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+          console.log('SW registered: ', registration)
+        })
+        .catch(registrationError => {
+          console.log('SW registration failed: ', registrationError)
+        })
+    }
+
+    // Handle mobile app status bar
+    if (window.Capacitor) {
+      import('@capacitor/status-bar').then(({ StatusBar }) => {
+        StatusBar.setBackgroundColor({ color: '#111827' })
+        StatusBar.setStyle({ style: 'dark' })
+      })
+    }
+  }, [])
+
+  return (
     <Router>
-      <div className="min-h-screen bg-background text-white">
+      <div className="min-h-screen bg-background text-white mobile-app-container">
         <Suspense fallback={<Loading type="dashboard" />}>
           <Routes>
             <Route path="/" element={<LandingPage />} />
@@ -51,6 +72,7 @@ return (
           theme="dark"
           style={{ zIndex: 9999 }}
           limit={5}
+          className="mobile-toast-container"
         />
       </div>
     </Router>

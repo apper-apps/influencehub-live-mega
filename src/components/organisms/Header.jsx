@@ -3,8 +3,9 @@ import { motion } from 'framer-motion'
 import ApperIcon from '@/components/ApperIcon'
 import Badge from '@/components/atoms/Badge'
 
-const Header = ({ onMenuToggle, title = 'Dashboard', userType = 'store' }) => {
+const Header = ({ onMenuToggle, title = 'Dashboard', userType = 'store', isMobile = false }) => {
   const [showNotifications, setShowNotifications] = useState(false)
+  const [showMobileSearch, setShowMobileSearch] = useState(false)
 
   const notifications = [
     {
@@ -44,34 +45,52 @@ const Header = ({ onMenuToggle, title = 'Dashboard', userType = 'store' }) => {
     }
   }
 
+// Handle mobile haptic feedback
+  const handleButtonClick = (callback) => {
+    if (window.Capacitor) {
+      import('@capacitor/haptics').then(({ Haptics }) => {
+        Haptics.impact({ style: 'light' })
+      })
+    }
+    callback()
+  }
+
   return (
     <motion.header
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-surface border-b border-gray-700 px-6 py-4 sticky top-0 z-40"
+      className="bg-surface border-b border-gray-700 px-4 md:px-6 py-3 md:py-4 sticky top-0 z-40 safe-area-inset-top"
     >
       <div className="flex items-center justify-between">
         {/* Left Section */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           <button
-            onClick={onMenuToggle}
-            className="lg:hidden p-2 rounded-lg hover:bg-gray-700 transition-colors"
+            onClick={() => handleButtonClick(onMenuToggle)}
+            className="lg:hidden p-2 rounded-lg hover:bg-gray-700 transition-colors active:scale-95 touch-manipulation"
           >
             <ApperIcon name="Menu" size={20} className="text-gray-400" />
           </button>
           
           <div>
-            <h1 className="text-xl font-bold text-white font-display">{title}</h1>
+            <h1 className="text-lg md:text-xl font-bold text-white font-display truncate max-w-40 md:max-w-none">{title}</h1>
             <p className="text-gray-400 text-sm">
               {userType === 'store' ? 'Store Owner Dashboard' : 'Influencer Dashboard'}
             </p>
           </div>
         </div>
 
-        {/* Right Section */}
-        <div className="flex items-center gap-4">
-          {/* Search */}
+{/* Right Section */}
+        <div className="flex items-center gap-2 md:gap-4">
+          {/* Mobile Search Toggle */}
+          <button
+            onClick={() => handleButtonClick(() => setShowMobileSearch(!showMobileSearch))}
+            className="md:hidden p-2 rounded-lg hover:bg-gray-700 transition-colors active:scale-95 touch-manipulation"
+          >
+            <ApperIcon name="Search" size={18} className="text-gray-400" />
+          </button>
+          
+          {/* Desktop Search */}
           <div className="hidden md:block">
             <div className="relative">
               <ApperIcon 
@@ -88,10 +107,10 @@ const Header = ({ onMenuToggle, title = 'Dashboard', userType = 'store' }) => {
           </div>
 
           {/* Notifications */}
-          <div className="relative">
+<div className="relative">
             <button
-              onClick={() => setShowNotifications(!showNotifications)}
-              className="relative p-2 rounded-lg hover:bg-gray-700 transition-colors"
+              onClick={() => handleButtonClick(() => setShowNotifications(!showNotifications))}
+              className="relative p-2 rounded-lg hover:bg-gray-700 transition-colors active:scale-95 touch-manipulation"
             >
               <ApperIcon name="Bell" size={20} className="text-gray-400" />
               {unreadCount > 0 && (
@@ -107,7 +126,7 @@ const Header = ({ onMenuToggle, title = 'Dashboard', userType = 'store' }) => {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="absolute right-0 mt-2 w-80 bg-surface border border-gray-600 rounded-lg shadow-xl z-50"
+                className="absolute right-0 mt-2 w-80 md:w-96 bg-surface border border-gray-600 rounded-lg shadow-xl z-50 max-h-96 overflow-hidden"
               >
                 <div className="p-4 border-b border-gray-700">
                   <div className="flex items-center justify-between">
@@ -182,6 +201,29 @@ const Header = ({ onMenuToggle, title = 'Dashboard', userType = 'store' }) => {
           </div>
         </div>
       </div>
+{/* Mobile Search Overlay */}
+      {showMobileSearch && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="md:hidden absolute top-full left-0 right-0 bg-surface border-b border-gray-700 p-4 z-40"
+        >
+          <div className="relative">
+            <ApperIcon 
+              name="Search" 
+              size={18} 
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
+            />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-full bg-gray-800 border border-gray-600 rounded-lg pl-10 pr-4 py-3 text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              autoFocus
+            />
+          </div>
+        </motion.div>
+      )}
     </motion.header>
   )
 }

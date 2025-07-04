@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import ApperIcon from '@/components/ApperIcon'
 import Badge from '@/components/atoms/Badge'
 
-const Sidebar = ({ isOpen, onClose, userType = 'store' }) => {
+const Sidebar = ({ isOpen, onClose, userType = 'store', isMobile = false }) => {
   const location = useLocation()
   const [collapsed, setCollapsed] = useState(false)
 
@@ -57,6 +57,18 @@ const Sidebar = ({ isOpen, onClose, userType = 'store' }) => {
     }
   }
 
+// Handle mobile haptic feedback
+  const handleNavClick = (path) => {
+    if (window.Capacitor) {
+      import('@capacitor/haptics').then(({ Haptics }) => {
+        Haptics.impact({ style: 'light' })
+      })
+    }
+    if (isMobile) {
+      onClose()
+    }
+  }
+
   return (
     <>
       {/* Mobile Overlay */}
@@ -65,7 +77,7 @@ const Sidebar = ({ isOpen, onClose, userType = 'store' }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden touch-none"
           onClick={onClose}
         />
       )}
@@ -167,17 +179,17 @@ const Sidebar = ({ isOpen, onClose, userType = 'store' }) => {
         </div>
 
         <nav className="flex-1 p-4 space-y-2">
-          {navItems.map((item) => (
+{navItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               end={item.path === '/app'}
-              onClick={onClose}
+              onClick={() => handleNavClick(item.path)}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 ${
+                `flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 touch-manipulation active:scale-95 ${
                   isActive
                     ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-lg'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-700'
+                    : 'text-gray-400 hover:text-white hover:bg-gray-700 active:bg-gray-600'
                 }`
               }
             >
