@@ -147,10 +147,10 @@ return (
               Welcome to{' '}
               <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                 Phoenix Hub
-              </span>
+</span>
             </h1>
             <p className="text-xl sm:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-              The web-based affiliate marketing platform that connects brands with top-performing affiliates worldwide
+              The automated platform for Brands, Stores, and Influencers to streamline partnerships and maximize growth
             </p>
             <div className="text-sm text-gray-400 mb-4">
               Access Phoenix Hub directly through your web browser • No downloads required
@@ -227,10 +227,10 @@ return (
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Why Choose Phoenix Hub?
+Why Choose Phoenix Hub?
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Powerful web-based features designed to maximize your affiliate marketing success
+              Powerful automated features designed to streamline connections between Brands, Stores, and Influencers
             </p>
           </div>
 
@@ -287,10 +287,10 @@ return (
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-            Ready to Scale Your Business?
+Ready to Scale Your Business?
           </h2>
           <p className="text-xl text-gray-300 mb-8">
-            Join thousands of successful brands and affiliates using our web platform
+            Join thousands of successful Brands, Stores, and Influencers using our automated platform
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
@@ -343,11 +343,11 @@ return (
       {/* Footer */}
       <footer className="border-t border-gray-800 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-white mb-2">Phoenix Hub</h3>
-            <p className="text-gray-400 mb-4">Professional Web-Based Affiliate Marketing Platform</p>
+<h3 className="text-2xl font-bold text-white mb-2">Phoenix Hub</h3>
+            <p className="text-gray-400 mb-4">Automated Platform for Brands, Stores, and Influencers</p>
           </div>
           
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div className="text-center">
               <h4 className="text-white font-medium mb-3">Platform</h4>
